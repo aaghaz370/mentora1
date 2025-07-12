@@ -96,23 +96,45 @@ nav a:hover {
 }
 
 @media (max-width: 768px) {
+  .hamburger {
+    display: block;
+    z-index: 1001;
+  }
+
   nav {
-    display: none;
+    position: fixed;
+    top: 70px;
+    right: -100%;
+    width: 220px;
+    height: 100vh;
+    background-color: #001a33;
     flex-direction: column;
-    background: #001a33;
-    position: absolute;
-    top: 200px;
-    right: 0;
-    width: 100px;
-    text-align: center;
+    align-items: flex-start;
+    padding: 1rem 1.5rem;
+    transition: right 0.3s ease;
   }
 
   nav.show {
-    display: flex;
+    right: 0;
   }
 
-  .hamburger {
-    display: block;
+  nav a {
+    padding: 0.7rem 0;
+    width: 100%;
+    border-bottom: 1px solid #003366;
+    font-size: 1rem;
+  }
+
+  nav a:last-child {
+    border-bottom: none;
+  }
+
+  .hamburger.open::before {
+    content: "✖";
+  }
+
+  .hamburger::before {
+    content: "☰";
   }
 }
 
