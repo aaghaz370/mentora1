@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Teachers</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+     <header>
+    <div class="logo">📘 Mentora</div>
+    <nav id="navbar">
+    <a href="#">Home</a>
+    <a href="#">Books</a>
+    <a href="#">Lectures</a>
+    <a href="inst.html">Institutes</a>
+    <a href="#">Team</a>
+  </nav>
+  <div class="hamburger" onclick="toggleMenu()"></div>
+</header>
+
+    <h1 class="title-head">Mentora</h1>
+<div class="title-underline"></div>
+
+  <h1 class="title">Our Teachers</h1>
+  <div class="teachers-grid">
+    <div class="teacher-card" onclick="openModal(0)">
+      <img src="https://static.sociofyme.com/thumb/113653527/113653527.jpg?imgsize=97222&width=420&height=746&resizemode=76" alt="Alakh Pandey Sir">
+      <p class="name">Alakh Pandey Sir</p>
+    </div>
+    <div class="teacher-card" onclick="openModal(1)">
+      <img src="https://akm-img-a-in.tosshub.com/indiatoday/images/story/202505/patnas-renowned-educator-and-youtuber-khan-sir-is-now-a-married-man-photo-khan-global-studiesins-273526828-3x4.jpg?VersionId=qM0jBWxik8OVSI7SCL3v9aEjK8U8uz_D" alt="Rohit Aggarwal Sir">
+      <p class="name">Khan Sir</p>
+    </div>
+    <div class="teacher-card" onclick="openModal(2)">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgwfyfI9CW9HfqqJC4LsPwTt9z4S91riKVYQ&s" alt="Teacher 3">
+      <p class="name">Vikas Divyakirti Sir</p>
+    </div>
+    <div class="teacher-card" onclick="openModal(3)">
+      <img src="https://yt3.googleusercontent.com/aaGAYtlmbJtkZjOHRkmul8I1bYrvNMnf_CnVkejaHfi-HW_7Mz7RwdmB8ww1V45tpE8RUV4ZqA=s900-c-k-c0x00ffffff-no-rj" alt="Teacher 4">
+      <p class="name">Dear Sir Kashif</p>
+    </div>
+    <div class="teacher-card" onclick="openModal(4)">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9if-UlzEQhrSPyOaDB7TaBkPXaoRDd5LYIg&s" alt="Teacher 4">
+      <p class="name">Aman Dhattarwal Sir</p>
+    </div>
+    <div class="teacher-card" onclick="openModal(5)">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRr12ygAS0I3vkL0HLKf3FjCRaKHYY3e0yaTA&s" alt="Teacher 4">
+      <p class="name">Gagan Pratap Sir</p>
+    </div>
+    <div class="teacher-card" onclick="openModal(6)">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8UuAAqQwA6dFJYE_ACd_4RA8cG0HNDrwmJtGNafBZ2U_hR6iQHdzkv_-H9KKbtQHG7fk&usqp=CAU" alt="Teacher 4">
+      <p class="name">Ojaank Sir</p>
+    </div>
+    <div class="teacher-card" onclick="openModal(7)">
+      <img src="https://via.placeholder.com/300x300?text=Teacher+4" alt="Teacher 4">
+      <p class="name">Teacher 4</p>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="modal" class="modal" onclick="closeModal(event)">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal(event)">×</span>
+      <img id="modal-img" src="" alt="Teacher">
+      <h2 id="modal-name"></h2>
+      <p id="modal-subject"></p>
+      <p id="modal-institute"></p>
+      <p id="modal-desc"></p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+<style>
+    body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background:linear-gradient(135deg, #0f0f3e, #050524);
+}
+
+header {
+      background-color: rgba(0, 0, 50, 0.7);
+      color: #00aaff;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      font-size: 1.3rem;
+      font-weight: bold;
+    }
+    nav a {
+      color: #00aaff;
+      text-decoration: none;
+      margin-left: 1.5rem;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    nav a:hover {
+      color: #00ccff;
+    }
+
+    @media (max-width: 768px) {
+  .hamburger {
+    display: block;
+    font-size: 2rem;
+    cursor: pointer;
+    z-index: 1001;
+  }
+
+  nav {
+    position: fixed;
+    top: 70px;
+    right: -100%;
+    width: 220px;
+    height: 100vh;
+    background-color: #001a33;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2rem 1.5rem;
+    transition: right 0.3s ease;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+  }
+
+  nav.show {
+    right: 0;
+  }
+
+  nav a {
+    display: block;
+    width: 100%;
+    padding: 0.8rem 0;
+    font-size: 1.05rem;
+    color: white;
+    border-bottom: 1px solid #003366;
+    text-align: left;
+    transition: background 0.3s;
+  }
+
+  nav a:hover {
+    background-color: #003366;
+  }
+
+  nav a:last-child {
+    border-bottom: none;
+  }
+
+  .hamburger.open::before {
+    content: "✖";
+  }
+
+  .hamburger::before {
+    content: "☰";
+  }
+}
+
+
+.title {
+  text-align: center;
+  font-size: 2rem;
+  color: #4ab1ff;
+  margin: 30px 0 10px;
+}
+
+.teachers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.teacher-card {
+  border: 1px solid #00aaff66;
+  border-radius: 12px;
+  text-align: center;
+  padding: 20px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  background: rgba(0, 0, 50, 0.4);
+}
+
+.teacher-card:hover {
+ transform: translateY(-8px);
+  box-shadow: 0 0 20px #00aaff55;
+}
+
+.teacher-card img {
+     border: 1px solid #00aaff66;
+  width: 150px;
+  height:180px;
+  border-radius: 8px;
+}
+
+.name {
+    color:#00aaff;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+/* Modal styles */
+.modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  overflow-y: auto;
+  z-index: 999;
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  max-width: 400px;
+  width: 100%;
+  position: relative;
+  animation: fadeIn 0.3s ease;
+}
+
+/* .modal-content img {
+  
+  width: 150px;
+  height:180px;
+  border-radius: 10px;
+} */
+ .modal-content img {
+  width: 150px;
+  height: 180px;
+  border-radius: 10px;
+  display: block;
+  margin: 0 auto; /* This centers the image horizontally */
+}
+
+
+.modal-content h2 {
+  margin: 15px 0 5px;
+  font-size: 1.5rem;
+}
+
+.modal-content p {
+  margin: 5px 0;
+  font-size: 1rem;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 1.5rem;
+  color: #000;
+  cursor: pointer;
+}
+
+@keyframes fadeIn {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+
+ .title-head {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color:  #00aaff;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+
+.title-underline {
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(to right, #3f5efb, #00d0ff);
+  margin: 0 auto 1.5rem;
+  border-radius: 10px;
+  animation: underlineAnim 2s ease-in-out infinite alternate;
+}
+
+@keyframes underlineAnim {
+  0% { width: 60px; }
+  100% { width: 100px; }
+}
+</style>
+<script>
+    const teachers = [
+ {
+    name: "Alakh Pandey Sir",
+    subject: "Subject: Physics",
+    institute: "Institute: Physics Wallah",
+    description: "Founder of Physics Wallah; simplifies complex physics topics for JEE/NEET aspirants with practical clarity.",
+    img: "https://static.sociofyme.com/thumb/113653527/113653527.jpg?imgsize=97222&width=420&height=746&resizemode=76"
+  },
+  {
+    name: "Khan Sir",
+    subject: "Subject: General Studies / GK",
+    institute: "Khan GS Research Centre",
+    description: "Faizal 'Khan Sir' teaches GK, history, polity & current affairs in an engaging, simplified style on YouTube and his app." ,
+    img: "https://akm-img-a-in.tosshub.com/indiatoday/images/story/202505/patnas-renowned-educator-and-youtuber-khan-sir-is-now-a-married-man-photo-khan-global-studiesins-273526828-3x4.jpg?VersionId=qM0jBWxik8OVSI7SCL3v9aEjK8U8uz_D"
+  },
+  {
+    name: "Vikas Divyakirti Sir",
+    subject: "Subject: UPSC / Civil Services",
+    institute: "Drishti IAS",
+    description: "Former civil servant and founder of Drishti IAS; provides in-depth strategy and conceptual clarity for UPSC aspirants.",
+    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgwfyfI9CW9HfqqJC4LsPwTt9z4S91riKVYQ&s"
+  },
+  {
+    name: "Dear Sir Kashif",
+    subject: "Subject: English",
+    institute: "YouTube – Dear Sir",
+    description: "Mohammad Kashif teaches English grammar & speaking skills via simple, humorous and highly accessible YouTube videos." ,
+    img: "https://yt3.googleusercontent.com/aaGAYtlmbJtkZjOHRkmul8I1bYrvNMnf_CnVkejaHfi-HW_7Mz7RwdmB8ww1V45tpE8RUV4ZqA=s900-c-k-c0x00ffffff-no-rj"
+  },
+  {
+    name: "Aman Dhattarwal Sir",
+    subject: "Subject: Career & Competitive Prep",
+    institute: "Apni Kaksha / Self YouTube",
+    description: "Covers board & competitive exam prep, soft skills, career guidance; 4M+ YouTube subscribers and founder of online platform Apni Kaksha.",
+    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9if-UlzEQhrSPyOaDB7TaBkPXaoRDd5LYIg&s"
+  },
+  {
+    name: "Gagan Pratap Sir",
+    subject: "Subject: Mathematics",
+    institute: "YouTube – Gagan Pratap Maths",
+    description: "Popular math teacher for SSC/Banking aspirants; explains profit‑loss, trigonometry, with clear, easy techniques and 5M+ subs.",
+    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRr12ygAS0I3vkL0HLKf3FjCRaKHYY3e0yaTA&s"
+  },
+  {
+    name: "Ojaank Sir",
+    subject: "Subject: Polity / History",
+    institute: "YouTube – IAS with Ojaank Sir",
+    description: "Simplifies polity, history & geography for UPSC aspirants; over 2.7M subscribers with recorded + live lectures.",
+    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8UuAAqQwA6dFJYE_ACd_4RA8cG0HNDrwmJtGNafBZ2U_hR6iQHdzkv_-H9KKbtQHG7fk&usqp=CAU"
+  },
+];
+
+function openModal(index) {
+  const teacher = teachers[index];
+  document.getElementById("modal-img").src = teacher.img;
+  document.getElementById("modal-name").innerText = teacher.name;
+  document.getElementById("modal-subject").innerText = teacher.subject;
+  document.getElementById("modal-institute").innerText = teacher.institute;
+  document.getElementById("modal-desc").innerText = teacher.description;
+  document.getElementById("modal").style.display = "flex";
+}
+
+function closeModal(event) {
+  if (event.target.classList.contains('modal') || event.target.classList.contains('close')) {
+    document.getElementById("modal").style.display = "none";
+  }
+}
+
+// Toggle Mobile Navbar
+function toggleMenu() {
+  const nav = document.getElementById("navbar");
+  const ham = document.querySelector(".hamburger");
+
+  nav.classList.toggle("show");
+  ham.classList.toggle("open");
+}
+
+</script>
