@@ -89,11 +89,11 @@ nav a:hover {
   color: #00ffff;
 }
 
-.hamburger {
+/* .hamburger {
   display: none;
   font-size: 1.8rem;
   cursor: pointer;
-}
+} */
 
 @media (max-width: 768px) {
   .hamburger {
