@@ -211,19 +211,76 @@
 }
 
 
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+    font-size: 2rem;
+    cursor: pointer;
+    z-index: 1001;
+  }
+
+  nav {
+    position: fixed;
+    top: 70px;
+    right: -100%;
+    width: 220px;
+    height: 100vh;
+    background-color: #001a33;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2rem 1.5rem;
+    transition: right 0.3s ease;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+  }
+
+  nav.show {
+    right: 0;
+  }
+
+  nav a {
+    display: block;
+    width: 100%;
+    padding: 0.8rem 0;
+    font-size: 1.05rem;
+    color: white;
+    border-bottom: 1px solid #003366;
+    text-align: left;
+    transition: background 0.3s;
+  }
+
+  nav a:hover {
+    background-color: #003366;
+  }
+
+  nav a:last-child {
+    border-bottom: none;
+  }
+
+  .hamburger.open::before {
+    content: "✖";
+  }
+
+  .hamburger::before {
+    content: "☰";
+  }
+}
+
+
   </style>
 </head>
 <body>
   <header>
     <div class="logo">📘 Mentora</div>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="#">Books</a>
-      <a href="#">Lectures</a>
-      <a href="inst.html">Institutes</a>
-      <a href="#">Team</a>
-    </nav>
-  </header>
+    <nav id="navbar">
+    <a href="#">Home</a>
+    <a href="#">Books</a>
+    <a href="#">Lectures</a>
+    <a href="inst.html">Institutes</a>
+    <a href="#">Team</a>
+  </nav>
+  <div class="hamburger" onclick="toggleMenu()"></div>
+</header>
 
   <section class="inst-top">
     
@@ -366,6 +423,16 @@ learning experiences for competitive exams and academic excellence.</p>
 
     function scrollToTop() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+
+// Toggle Mobile Navbar
+function toggleMenu() {
+  const nav = document.getElementById("navbar");
+  const ham = document.querySelector(".hamburger");
+
+  nav.classList.toggle("show");
+  ham.classList.toggle("open");
 }
 
   </script>
