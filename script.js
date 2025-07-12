@@ -25,6 +25,11 @@ scrollBtn.addEventListener('click', () => {
 
 
 
+// Toggle Mobile Navbar
 function toggleMenu() {
-  document.getElementById("navbar").classList.toggle("show");
+  const nav = document.getElementById("navbar");
+  const ham = document.querySelector(".hamburger");
+
+  nav.classList.toggle("show");
+  ham.classList.toggle("open");
 }
