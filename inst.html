@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Institutes | Study Zone</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0f0f3e, #050524);
+      color: #00aaff;
+    }
+    header {
+      background-color: rgba(0, 0, 50, 0.7);
+      color: #00aaff;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      font-size: 1.3rem;
+      font-weight: bold;
+    }
+    nav a {
+      color: #00aaff;
+      text-decoration: none;
+      margin-left: 1.5rem;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    nav a:hover {
+      color: #00ccff;
+    }
+    .inst-top {
+      text-align: center;
+      padding: 3rem 1rem 2rem;
+    }
+    .inst-top h2 {
+      font-size: 1.8rem;
+      color: #00aaff;
+      margin-bottom: 0.5rem;
+    }
+    .inst-top p {
+      font-size: 1.1rem;
+      color: #b3eaff;
+      margin-bottom: 2rem;
+    }
+    .search-filter {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    #searchInput {
+        background: rgba(0, 0, 50, 0.4);
+      width: 100%;
+      padding: 0.8rem 1rem;
+      font-size: 1rem;
+      border: 2px solid #00aaff66;
+      border-radius: 50px;
+      margin-bottom: 1rem;
+      outline: none;
+    }
+    .filters {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      padding: 0.5rem 1.2rem;
+      background:  rgba(0, 0, 50, 0.4);
+      color: #b3eaff;
+      border: 1px solid #00aaff66;
+      border-radius: 20px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .filter-btn.active,
+    .filter-btn:hover {
+      background: #00aaff;
+      color: white;
+    }
+    .inst-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      padding: 2rem;
+      max-width: 1200px;
+      margin: auto;
+    }
+    .inst-card {
+      background-color:rgba(0, 0, 50, 0.4);
+      border-radius: 15px;
+      border: 1px solid #00aaff66;
+      padding: 1.5rem;
+      box-shadow: 0 6px 20px rgba(0, 0, 50, 0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+      text-align: center;
+    }
+    /* .inst-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 10px 25px rgba(0, 0, 50, 0.2);
+    } */
+     .inst-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 0 20px #00aaff55;
+}
+    .inst-card img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 1rem;
+    }
+    .inst-card h3 {
+      font-size: 1.2rem;
+      color:  #00aaff;
+      margin-bottom: 0.5rem;
+    }
+    .inst-card p {
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+      color: #b3eaff;
+    }
+    .stats {
+      font-size: 0.9rem;
+      color:  #00aaff;
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 1.2rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .explore-btn {
+      display: inline-block;
+      padding: 0.6rem 1.3rem;
+      background: linear-gradient(to right, #0066ff, #00ccff);
+      color: white;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.3s ease;
+    }
+    .explore-btn:hover {
+      background: linear-gradient(to right, #0044cc, #00aaff);
+    }
+
+
+    .title-head {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color:  #00aaff;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+
+.title-underline {
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(to right, #3f5efb, #00d0ff);
+  margin: 0 auto 1.5rem;
+  border-radius: 10px;
+  animation: underlineAnim 2s ease-in-out infinite alternate;
+}
+
+@keyframes underlineAnim {
+  0% { width: 60px; }
+  100% { width: 100px; }
+}
+
+.footer {
+  background: linear-gradient(135deg, #0f0f3e, #050524);
+  border:solid 1px #00aaff66 ;
+  color: #beb4b4;
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 1rem 1.5rem;
+  border-radius: 15px;
+  margin: 2rem auto 1rem;
+  max-width: 90%;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+
+.scroll-top-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background:   #00aaff;
+  color: #000021;
+  border: none;
+  border-radius: 50%;
+  padding: 0.7rem 0.9rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+  box-shadow: 0 0 10px #00aaff;
+  transition: transform 0.3s ease;
+  z-index: 999;
+}
+
+.scroll-top-btn:hover {
+   background-color: #00ffff;
+}
+
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">📘 Mentora</div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="#">Books</a>
+      <a href="#">Lectures</a>
+      <a href="inst.html">Institutes</a>
+      <a href="#">Team</a>
+    </nav>
+  </header>
+
+  <section class="inst-top">
+    
+    <h1 class="title-head">Mentora</h1>
+<div class="title-underline"></div>
+
+<p>Discover India’s premier educational platforms offering transformative<br>
+learning experiences for competitive exams and academic excellence.</p>
+
+
+    <div class="search-filter">
+      <input type="text" id="searchInput" placeholder="🔍 Search institutes by name or description...">
+      <div class="filters">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="jee">JEE/NEET</button>
+        <button class="filter-btn" data-filter="upsc">UPSC</button>
+        <button class="filter-btn" data-filter="cbse">CBSE/ICSE</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="inst-cards" id="instituteContainer">
+    <div class="inst-card" data-category="jee">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvmNCtUxGTpR8gFKlx_lWZyT0-2LIb8Om63g&s" alt="PW">
+      <h3>Physics Wallah</h3>
+      <p>India’s most loved platform for JEE & NEET with affordable, quality content.</p>
+      <div class="stats">
+        <span>📚 10M+ Students</span>
+        <span>⭐ 4.9 Rating</span>
+        <span>✅ 95% Success</span>
+      </div>
+      <a href="#" class="explore-btn">🚀 Explore Platform</a>
+    </div>
+    <div class="inst-card" data-category="jee">
+      <img src="https://yt3.googleusercontent.com/ytc/AIdro_nCtT9fD37NkD-qXYim9LUc6_HWulcfL2SeU51ZlRS8dkQ=s900-c-k-c0x00ffffff-no-rj" alt="Unacademy">
+      <h3>Unacademy</h3>
+      <p>India’s largest platform with top educators for competitive and skill courses.</p>
+      <div class="stats">
+        <span>📚 15M+ Students</span>
+        <span>⭐ 4.8 Rating</span>
+        <span>✅ 90% Success</span>
+      </div>
+      <a href="#" class="explore-btn">🚀 Explore Platform</a>
+    </div>
+    <div class="inst-card" data-category="cbse">
+      <img src="https://lh3.googleusercontent.com/dmbgsqIliQgohOVI-uD5NrexgkEQJbI_4-JmDB5TC6YbRdDnTiQd4APiZ5hIrw2SSga2=h512" alt="Apni Kaksha">
+      <h3>Apni Kaksha</h3>
+      <p>Accessible courses for JEE, NEET, and CBSE students with modern video classes.</p>
+      <div class="stats">
+        <span>📚 5M+ Students</span>
+        <span>⭐ 4.9 Rating</span>
+        <span>✅ 93% Success</span>
+      </div>
+      <a href="#" class="explore-btn">🚀 Explore Platform</a>
+    </div>
+    <div class="inst-card" data-category="upsc">
+      <img src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/23/97/be/2397be7a-337f-ecc1-0de0-1dfd362c6550/AppIcon-0-0-1x_U007epad-0-1-0-sRGB-85-220.png/1200x630wa.png" alt="Next Topper">
+      <h3>Next Topper</h3>
+      <p>Interactive UPSC courses with expert mentors and current affairs focus.</p>
+      <div class="stats">
+        <span>📚 2M+ Students</span>
+        <span>⭐ 4.7 Rating</span>
+        <span>✅ 91% Success</span>
+      </div>
+      <a href="#" class="explore-btn">🚀 Explore Platform</a>
+    </div>
+    <div class="inst-card" data-category="jee">
+      <img src="https://univora1.netlify.app/assets/study.jpg" alt="Landon JEE">
+      <h3>Landon JEE</h3>
+      <p>Top teachers for CBSE, ICSE, JEE & NEET. Live tutoring platform.</p>
+      <div class="stats">
+        <span>📚 8M+ Students</span>
+        <span>⭐ 4.8 Rating</span>
+        <span>✅ 92% Success</span>
+      </div>
+      <a href="#" class="explore-btn">🚀 Explore Platform</a>
+    </div>
+    <div class="inst-card" data-category="cbse">
+      <img src="https://univora1.netlify.app/assets/study.jpg" alt="Other TRMS">
+      <h3>TRMS Other Courses</h3>
+      <p>Engaging, adaptive learning programs for various school boards & topics.</p>
+      <div class="stats">
+        <span>📚 20M+ Students</span>
+        <span>⭐ 4.7 Rating</span>
+        <span>✅ 89% Success</span>
+      </div>
+      <a href="#" class="explore-btn">🚀 Explore Platform</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+<footer class="footer">
+  © 2025 Mentora | Revolutionizing Education Through Innovation | By Rolex | All rights reserved
+</footer>
+
+<!-- Scroll to Top Button -->
+<button onclick="scrollToTop()" class="scroll-top-btn" title="Go to top">⬆</button>
+
+
+  <script>
+    const filterButtons = document.querySelectorAll(".filter-btn");
+    const cards = document.querySelectorAll(".inst-card");
+    const searchInput = document.getElementById("searchInput");
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        filterButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+
+        const filter = btn.getAttribute("data-filter");
+
+        cards.forEach(card => {
+          const category = card.getAttribute("data-category").toLowerCase();
+          if (filter === "all" || category.includes(filter)) {
+            card.style.display = "block";
+          } else {
+            card.style.display = "none";
+          }
+        });
+
+        searchInput.value = "";
+      });
+    });
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      cards.forEach(card => {
+        const name = card.querySelector("h3").innerText.toLowerCase();
+        const desc = card.querySelector("p").innerText.toLowerCase();
+
+        if (name.includes(query) || desc.includes(query)) {
+          card.style.display = "block";
+        } else {
+          card.style.display = "none";
+        }
+      });
+
+      filterButtons.forEach(b => b.classList.remove("active"));
+    });
+
+    function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+  </script>
+</body>
+</html>

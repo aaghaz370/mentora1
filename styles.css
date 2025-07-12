@@ -1,0 +1,258 @@
+/* style.css */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #0f0f3e, #050524);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+  color: #00aaff;
+  min-height: 100vh;
+}
+
+/* Hero Section */
+.hero-section {
+  background-color: linear-gradient(135deg, #0f0f3e, #050524);
+  text-align: center;
+  padding: 4rem 2rem;
+}
+
+.hero-section h1 {
+  font-size: 2.2rem;
+  color:  #00ccff;
+  margin-bottom: 1rem;
+  font-family: 'Segoe UI', sans-serif;
+  font-weight: bold;
+}
+
+.hero-section p {
+  font-size: 1.05rem;
+  color: #b3eaff;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.hero-btn {
+  display: inline-block;
+  padding: 0.7rem 1.5rem;
+  background-color: #0066ff;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+.hero-btn:hover {
+  background-color: #004fc9;
+}
+
+
+/* Animated background */
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: rgba(0, 0, 50, 0.7);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #00aaff;
+}
+
+nav a {
+  margin-left: 1.5rem;
+  color: #00aaff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+nav a:hover {
+  color: #00ffff;
+}
+
+.hamburger {
+  display: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+
+
+/* Cards container */
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+}
+
+/* Card */
+.card {
+  background: rgba(0, 0, 50, 0.4);
+  border: 1px solid #00aaff66;
+  border-radius: 12px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 0 20px #00aaff55;
+}
+
+.icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #00aaff;
+}
+
+.card h3 {
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+  color: #00ccff;
+}
+
+.card p {
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+  color: #b3eaff;
+}
+
+/* Button */
+button {
+  background-color: transparent;
+  color: #00aaff;
+  border: 2px solid #00aaff;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: #00aaff;
+  color: #000021;
+}
+
+
+.scroll-top-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 20px;
+  background-color: #00aaff;
+  color: #000021;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 50%;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  display: none;
+  box-shadow: 0 0 10px #00aaff;
+  transition: background 0.3s ease;
+}
+
+.scroll-top-btn:hover {
+  background-color: #00ffff;
+}
+
+
+
+/* Join Community */
+.join-community {
+  border-top:solid 1px  #00aaff;
+  text-align: center;
+  padding: 3rem 2rem;
+  background-color: linear-gradient(135deg, #0f0f3e, #050524);
+  color:  #b3eaff;
+}
+
+.join-community h2 {
+  font-size: 2rem;
+  color: #00b8b8;
+  margin-bottom: 1rem;
+}
+
+.join-community p {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+.telegram-btn {
+  display: inline-block;
+  padding: 0.7rem 1.5rem;
+  background-color: #0066ff;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+.telegram-btn:hover {
+  background-color: #0052cc;
+}
+
+.join-community blockquote {
+  margin-top: 2rem;
+  font-style: italic;
+  color: #9ad6fe;
+}
+
+/* Footer */
+footer {
+  background-color:  #b3eaff;
+  color:linear-gradient(135deg, #0f0f3e, #050524);
+  padding: 2rem 1rem 1rem;
+}
+
+.footer-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 2rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.footer-box h3 {
+  font-size: 1.1rem;
+  background: linear-gradient(to right, #4d4dff, #a64dff);
+  color:white;
+  padding: 0.5rem;
+  border-radius: 10px;
+  margin-bottom: 0.5rem;
+}
+
+.footer-box p {
+  font-size: 0.95rem;
+  color: linear-gradient(135deg, #0f0f3e, #050524);
+  margin: 5px 0;
+}
+
+.footer-bottom {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #4c7bb8;
+  border-top: 1px solid #003366;
+  padding-top: 0.5rem;
+}
