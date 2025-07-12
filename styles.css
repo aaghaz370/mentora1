@@ -95,6 +95,26 @@ nav a:hover {
   cursor: pointer;
 }
 
+@media (max-width: 768px) {
+  nav {
+    display: none;
+    flex-direction: column;
+    background: #001a33;
+    position: absolute;
+    top: 70px;
+    right: 0;
+    width: 100%;
+    text-align: center;
+  }
+
+  nav.show {
+    display: flex;
+  }
+
+  .hamburger {
+    display: block;
+  }
+}
 
 /* Cards container */
 .card-container {
