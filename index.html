@@ -1,136 +1,682 @@
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <title>Study Time</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Michroma&display=swap" rel="stylesheet">
-  <title>Mentora</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+
+    section.hero {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 1000px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
+      gap: 30px;
+    }
+
+    .left {
+      flex: 1;
+    }
+
+    .left h1 {
+      font-size: 2.7rem;
+      margin-bottom: 10px;
+    }
+
+    .left p {
+      font-size: 1.1rem;
+      color: #d0d0d0;
+      margin-top: 10px;
+      line-height: 1.6;
+    }
+
+    .start-btn {
+      margin-top: 25px;
+      padding: 14px 30px;
+      border: none;
+      border-radius: 30px;
+      background: linear-gradient(to right, #4facfe, #00f2fe);
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      color: white;
+      transition: all 0.3s ease;
+    }
+
+    .start-btn:hover {
+      transform: scale(1.05);
+    }
+
+    .right {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .study-illustration {
+      width: 100%;
+      max-width: 400px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .right {
+        margin-top: 20px;
+      }
+    }
+
+    /* why choose us section */
+    section.why-choose {
+      max-width: 1200px;
+      margin: auto;
+      padding: 80px 20px;
+      text-align: center;
+    }
+
+    section.why-choose h2 {
+      font-size: 3rem;
+      color:#4eeef7;
+      margin-bottom: 15px;
+    }
+
+    section.why-choose .subtitle {
+      color: #cccccc;
+      font-size: 1.1rem;
+      margin-bottom: 60px;
+    }
+
+    .card-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 30px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      padding: 35px 25px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(15px);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(141, 231, 231, 0.2), transparent 60%);
+      transform: rotate(45deg);
+      transition: 0.6s ease;
+    }
+
+    .card:hover::before {
+      top: -20%;
+      left: -20%;
+    }
+
+    .icon-box {
+      font-size: 48px;
+      color:#4eeef7;
+      margin-bottom: 20px;
+      transition: transform 0.4s ease;
+    }
+
+    .card:hover .icon-box {
+      animation: bounceIcon 0.6s ease;
+    }
+
+    @keyframes bounceIcon {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.4) rotate(10deg); }
+      100% { transform: scale(1); }
+    }
+
+    .card h3 {
+      font-size: 1.4rem;
+      color: #ffffff;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      color: #bbbbbb;
+      line-height: 1.5;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 30px rgba(0, 255, 255, 0.2);
+    }
+
+    @media (max-width: 768px) {
+      section.why-choose h2 {
+        font-size: 2.2rem;
+      }
+    }
+
+
+    /* HOW IT WORKS */
+section.how-it-works {
+  /* background: #111; */
+  padding: 80px 20px;
+  text-align: center;
+}
+section.how-it-works h2 {
+  font-size: 2.8rem;
+  color:#4eeef7;
+  margin-bottom: 10px;
+}
+section.how-it-works .subtitle {
+  color: #888;
+  font-size: 1rem;
+  max-width: 700px;
+  margin: 0 auto 60px;
+}
+
+.steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+}
+.step {
+  flex: 1 1 260px;
+  max-width: 300px;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeUp 0.8s ease forwards;
+  animation-delay: calc(var(--i) * 0.3s);
+}
+.step:hover h3 { color: #fff; }
+.step:hover p  { color: #ddd; }
+
+/* neon‑ring circle */
+.circle {
+  position: relative;
+  width: 80px;  height: 80px;
+  margin: 0 auto 20px;
+}
+.circle span {
+  position: absolute;
+  bottom: -8px; right: -8px;
+  background: #4eeef7;
+  color: #000000;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  font-size: 0.9rem;
+  line-height: 24px;
+}
+.circle i {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  color:#4eeef7;
+  font-size: 1.5rem;
+  z-index: 1;
+}
+
+/* animated neon border */
+.circle::before {
+  content: "";
+  position: absolute;
+  top: -4px; left: -4px;
+  width: calc(100% + 8px);
+  height: calc(100% + 8px);
+  border-radius: 50%;
+  border: 4px solid #333;
+  box-shadow: 0 0 12px rgba(92, 255, 255, 0.2),
+              inset 0 0 8px rgba(24, 244, 244, 0.2);
+  animation: spin 3s linear infinite;
+}
+.step:hover .circle::before {
+  animation-duration: 1s;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .steps {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+
+/* WHAT WE OFFER */
+section.offer {
+  /* background: #111; */
+  padding: 80px 20px;
+  text-align: center;
+}
+section.offer h2 {
+  font-size: 2.8rem;
+  color: #4eeef7;
+  margin-bottom: 0px;
+}
+section.offer .subtitle {
+  color: #888;
+  font-size: 1rem;
+  max-width: 700px;
+  margin: 0 auto 60px;
+}
+
+.offer-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  perspective: 1000px;
+}
+
+.offer-card {
+  background: rgba(255,255,255,0.05);
+  border-radius: 20px;
+  width: 260px;
+  padding: 30px 20px;
+  color: #ddd;
+  transform-style: preserve-3d;
+  transition: transform 0.6s ease, box-shadow 0.6s ease;
+  position: relative;
+  overflow: hidden;
+}
+.offer-card::before {
+  content:"";
+  position:absolute;
+  top:-4px; left:-4px;
+  width:calc(100%+8px);
+  height:calc(100%+8px);
+  border-radius:20px;
+  border:2px solid #333;
+  box-shadow:0 0 12px rgba(255,60,90,0.4), inset 0 0 8px rgba(255,60,90,0.2);
+  transition: box-shadow 0.6s ease;
+}
+
+.offer-card:hover {
+  transform: rotateY(15deg) rotateX(10deg) scale(1.05);
+  box-shadow: 0 20px 40px rgba(0, 255, 255, 0.2);
+}
+.offer-card:hover::before {
+  box-shadow:0 0 20px rgba(255,60,90,0.6), inset 0 0 12px rgba(255,60,90,0.4);
+}
+
+.offer-card .icon {
+  font-size: 48px;
+  color:#4eeef7;
+  margin-bottom: 15px;
+  transition: transform 0.6s ease;
+}
+.offer-card:hover .icon {
+  transform: translateZ(40px) rotate(10deg);
+}
+
+.offer-card h3 {
+  font-size: 1.3rem;
+  color: #fff;
+  margin-bottom: 12px;
+}
+.offer-card p {
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .offer-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+
+/* FOOTER */
+.site-footer {
+  background:rgba(0, 255, 255, 0.2);
+  color: #ccc;
+  padding-top: 60px;
+  font-family: 'Poppins', sans-serif;
+}
+.footer-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+  gap: 40px;
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 20px;
+}
+.footer-block h4 {
+  color:#62d0ff;
+  margin-bottom: 16px;
+  font-size: 1.2rem;
+}
+.footer-block p,
+.footer-block a {
+  font-size: 0.95rem;
+  color: #aaa;
+  text-decoration: none;
+  line-height: 1.6;
+}
+
+/* Links hover underline slide */
+.footer-block ul li {
+  margin-bottom: 8px;
+}
+.footer-block ul li a {
+  position: relative;
+  padding-bottom: 2px;
+  transition: color 0.3s;
+}
+.footer-block ul li a::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 0; height: 2px;
+  background:#62d0ff;
+  transition: width 0.3s ease;
+}
+.footer-block ul li a:hover {
+  color: #fff;
+}
+.footer-block ul li a:hover::after {
+  width: 100%;
+}
+
+/* Social icons with pop & glow */
+.social-icons {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.social-icons a {
+  font-size: 1.2rem;
+  color: #888;
+  transition: transform 0.3s ease, color 0.3s ease, text-shadow 0.3s;
+}
+.social-icons a:hover {
+  color: #62d0ff;
+  transform: scale(1.3) rotate(10deg);
+  text-shadow: 0 0 8px rgba(0, 255, 255, 0.2);
+}
+
+/* Subscribe form */
+.subscribe-form {
+  display: flex;
+  gap: 8px;
+}
+.subscribe-form input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #333;
+  border-radius: 4px;
+  background: #111;
+  color: #eee;
+  transition: border-color 0.3s;
+}
+.subscribe-form input:focus {
+  outline: none;
+  border-color: #ff3c5a;
+}
+.subscribe-form button {
+  padding: 8px 16px;
+  border: none;
+  background: #ff3c5a;
+  color: #111;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+.subscribe-form button:hover {
+  background: #e63248;
+  box-shadow: 0 4px 12px rgba(255,60,90,0.5);
+}
+
+/* Footer bottom */
+.footer-bottom {
+  text-align: center;
+  padding: 20px 0;
+  border-top: 1px solid #222;
+  margin-top: 40px;
+}
+.footer-bottom p {
+  font-size: 0.85rem;
+  color: #cac9c9;
+}
+
+/* Responsive */
+@media(max-width: 768px) {
+  .subscribe-form {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+
+  </style>
 </head>
 <body>
-  <header>
-    <div class="logo">📘 Mentora</div>
-  <nav id="navbar">
-    <a href="index.html">Home</a>
-    <a href="#">Books</a>
-    <a href="teacher.html">Teachers</a>
-    <a href="inst.html">Institutes</a>
-    <a href="#">Team</a>
-  </nav>
-  <div class="hamburger" onclick="toggleMenu()"></div>
-</header>
 
-  <!-- Hero Section -->
-<section class="hero-section">
-  <h1>YOUR GATEWAY TO QUALITY EDUCATION</h1>
-  <p>
-    Explore our comprehensive collection of educational resources designed to<br />
-    help you excel in your academic journey with futuristic learning technology.
+<!-- HERO SECTION -->
+<section class="hero">
+  <div class="container">
+    <div class="left">
+      <h1>📚 Focus Mode: ON</h1>
+      <p>Your mind is your most powerful tool. Eliminate distractions, dive into knowledge, and let your journey begin. ✨</p>
+      <button class="start-btn" onclick="window.location.href='test.html'">Start Learning</button>
+    </div>
+
+    <div class="right">
+      <svg class="study-illustration" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <path fill="#ffffff" d="M256 0C114.836 0 0 114.836 0 256s114.836 256 256 256 256-114.836 256-256S397.164 0 256 0zm0 472c-119.293 0-216-96.707-216-216S136.707 40 256 40s216 96.707 216 216-96.707 216-216 216z"/>
+        <circle cx="256" cy="256" r="140" fill="#4facfe"/>
+        <circle cx="256" cy="230" r="50" fill="#fff"/>
+        <rect x="216" y="280" width="80" height="120" rx="10" fill="#fff"/>
+        <circle cx="246" cy="300" r="5" fill="#4facfe">
+          <animate attributeName="cy" values="300;290;300" dur="1s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="266" cy="320" r="5" fill="#4facfe">
+          <animate attributeName="cy" values="320;310;320" dur="1s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="256" cy="340" r="5" fill="#4facfe">
+          <animate attributeName="cy" values="340;330;340" dur="1s" repeatCount="indefinite" />
+        </circle>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- WHY CHOOSE US SECTION -->
+<section class="why-choose">
+  <h2>Why Choose Us?</h2>
+  <p class="subtitle">Notora gives you premium learning like PW — safe, student-first, and always free. 🚀</p>
+
+  <div class="card-container">
+    <div class="card">
+      <div class="icon-box"><i class="fas fa-chalkboard-teacher"></i></div>
+      <h3>Free Lectures</h3>
+      <p>Access top-quality educational content at zero cost. Learn like a pro with structured video lectures.</p>
+    </div>
+
+    <div class="card">
+      <div class="icon-box"><i class="fas fa-shield-alt"></i></div>
+      <h3>Fully Safe</h3>
+      <p>All resources are manually verified. No spam, no ads, no distractions. Just clean study time.</p>
+    </div>
+
+    <div class="card">
+      <div class="icon-box"><i class="fas fa-users"></i></div>
+      <h3>Built for Students</h3>
+      <p>We grow with you. Every update, every feature is shaped by your feedback. Made by learners, for learners.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS SECTION -->
+<section class="how-it-works">
+  <h2>How It Works</h2>
+  <p class="subtitle">
+    Start learning instantly — no sign‑up, no hassle. Here’s how you can make the most of EduSpark:
   </p>
-  <a href="#resources" class="hero-btn">EXPLORE RESOURCES</a>
+
+  <div class="steps">
+    <div class="step" style="--i:1">
+      <div class="circle"><i class="fas fa-door-open"></i><span>1</span></div>
+      <h3>Open &amp; Start</h3>
+      <p>No log‑in, no sign‑up—just jump straight into thousands of lectures and resources, anytime, anywhere.</p>
+    </div>
+
+    <div class="step" style="--i:2">
+      <div class="circle"><i class="fas fa-search"></i><span>2</span></div>
+      <h3>Explore &amp; Learn</h3>
+      <p>Browse by subject, filter by exam or category, and dive in at your own pace. Discover new topics every day.</p>
+    </div>
+
+    <div class="step" style="--i:3">
+      <div class="circle"><i class="fas fa-graduation-cap"></i><span>3</span></div>
+      <h3>Apply &amp; Master</h3>
+      <p>Test your knowledge with quizzes, track progress, and become the expert you’ve always wanted to be.</p>
+    </div>
+  </div>
 </section>
 
 
-  <main>
-    <section class="card-container">
-      <div class="card">
-        <div class="icon">📚</div>
-        <!-- <h3>Khazana Books</h3> -->
-         <h2 class="study-title">Khazana Books</h2>
-        <p>Access a rich library of enhanced digital books.</p>
-        <button>Explore</button>
-      </div>
-      <div class="card">
-        <div class="icon">🏫</div>
-        <!-- <h3>Top Institutes</h3> -->
-         <h2 class="study-title">Top Institutes</h2>
-        <p>Learn from experienced educators online.</p>
-        <button onclick="window.location.href='inst.html'">Explore</button>
-      </div>
-      <div class="card">
-        <div class="icon">💻</div>
-        <!-- <h3>Live Classes</h3> -->
-         <h2 class="study-title">Live Classes</h2>
-        <p>Interactive live sessions for real-time learning.</p>
-        <button>Explore</button>
-      </div>
-      <div class="card">
-        <div class="icon">✅</div>
-        <!-- <h3>Practice Tests</h3> -->
-         <h2 class="study-title">Practice Tests</h2>
-        <p>Track your performance with regular tests.</p>
-         <button onclick="window.location.href='y.html'">Explore</button>
-      </div>
-      <div class="card">
-        <div class="icon">🎓</div>
-        <!-- <h3>Top Teachers</h3> -->
-         <h2 class="study-title">Top Teachers</h2>
-        <p>Meet top educators guiding you to success.</p>
-        <button onclick="window.location.href='teacher.html'">Explore</button>
-      </div>
-      <div class="card">
-        <div class="icon">👥</div>
-        <h3>Our Team</h3>
-        <p>Visionaries behind Study Zone.</p>
-        <button>Explore</button>
-      </div>
-      <div class="card">
-        <div class="icon">🎬</div>
-        <h3>Ritsam Movies</h3>
-        <p>Explore inspiring educational entertainment.</p>
-        <button>Explore</button>
-      </div>
-      <div class="card">
-        <div class="icon">🎵</div>
-        <h3>Kanako Music</h3>
-        <p>Study music curated for your focus.</p>
-        <button>Explore</button>
-      </div>
-    </section>
-  </main>
+<!-- WHAT WE OFFER SECTION -->
+<section class="offer">
+  <h2>What We Offer</h2>
+  <p class="subtitle">
+    Notora isn’t just another site — it’s your one‑stop, ad‑free hub for top‑tier PW, KGS & Next Topper lectures, all 100% free.
+  </p>
 
-  <!-- Join Community Section -->
-<section class="join-community">
-  <h2>JOIN OUR CYBER COMMUNITY</h2>
-  <p>Stay updated with the latest resources and announcements on Telegram.</p>
-  <a href="#" class="telegram-btn">📢 JOIN TELEGRAM</a>
-  <blockquote>
-    "Education is the most powerful weapon which you can use to change the world."<br>
-    – Nelson Mandela
-  </blockquote>
+  <div class="offer-grid">
+    <div class="offer-card">
+      <div class="icon"><i class="fas fa-play-circle"></i></div>
+      <h3>PW Lectures</h3>
+      <p>Stream every PW class without paying a rupee. Structured, in‑depth, always free.</p>
+    </div>
+
+    <div class="offer-card">
+      <div class="icon"><i class="fas fa-user-graduate"></i></div>
+      <h3>KGS Lectures</h3>
+      <p>Dive into KGS’s best lectures — no cost, no limits. Learn from the very best.</p>
+    </div>
+
+    <div class="offer-card">
+      <div class="icon"><i class="fas fa-star"></i></div>
+      <h3>Next Topper</h3>
+      <p>Exclusive Next Topper sessions, free forever. Your shortcut to exam success.</p>
+    </div>
+
+    <div class="offer-card">
+      <div class="icon"><i class="fas fa-ban"></i></div>
+      <h3>Ad‑Free</h3>
+      <p>Zero ads, zero distractions. Pure uninterrupted learning — just how it should be.</p>
+    </div>
+  </div>
 </section>
 
-<!-- Footer -->
-<footer>
+
+<!-- FOOTER SECTION -->
+<footer class="site-footer">
   <div class="footer-container">
-    <div class="footer-box">
-      <h3>STUDY ZONE</h3>
-      <p>Redefining education with futuristic approaches and innovative methodologies.</p>
+    <!-- About -->
+    <div class="footer-block">
+      <h4>About Notora</h4>
+      <p>Your free, ad‑free hub for PW, KGS & Next Topper lectures. Empowering every learner — always.</p>
     </div>
-    <div class="footer-box">
-      <h3>RESOURCES</h3>
-      <p>Books</p>
-      <p>Lectures</p>
-      <p>Teachers</p>
+
+    <!-- Quick Links -->
+    <div class="footer-block">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#why-choose-us">Why Choose Us</a></li>
+        <li><a href="#offer">What We Offer</a></li>
+        <li><a href="courses.html">All Courses</a></li>
+      </ul>
     </div>
-    <div class="footer-box">
-      <h3>ENTERTAINMENT</h3>
-      <p>Ritsam Movies</p>
-      <p>Kanako Music</p>
+
+    <!-- Contact -->
+    <div class="footer-block">
+      <h4>Get In Touch</h4>
+      <p>Email: <a href="mailto:support@notora.com">support@notora.com</a></p>
+      <p>Phone: <a href="tel:+911234567890">+91 12345 67890</a></p>
     </div>
-    <div class="footer-box">
-      <h3>LEGAL</h3>
-      <p>Privacy Policy</p>
-      <p>Terms of Service</p>
+
+    <!-- Social + Subscribe -->
+    <div class="footer-block">
+      <h4>Stay Connected</h4>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+      </div>
+      <!-- <form class="subscribe-form">
+        <input type="email" placeholder="Your email" required>
+        <button type="submit">Subscribe</button>
+      </form> -->
     </div>
   </div>
   <div class="footer-bottom">
-    <p>COPYRIGHT © 2025 STUDY ZONE | ALL RIGHTS RESERVED</p>
-    <p>POWERED BY UNIVORA 💖 &nbsp;|&nbsp; DEVELOPER: ROLEX</p>
+    <p>© 2025 Notora. All Rights Reserved.</p>
   </div>
 </footer>
 
 
-  <script src="script.js"></script>
 </body>
 </html>
