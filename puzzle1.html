@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sliding Puzzle Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: white;
+        }
+
+        .game-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+            font-weight: 300;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            backdrop-filter: blur(5px);
+        }
+
+        .timer, .moves {
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .timer::before {
+            content: "⏱️";
+        }
+
+        .moves::before {
+            content: "🚀";
+        }
+
+        .game-board {
+            position: relative;
+            margin: 0 auto 20px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        canvas {
+            display: block;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .btn {
+            background: linear-gradient(145deg, #ff6b6b, #ee5a52);
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(238, 90, 82, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(238, 90, 82, 0.6);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn.secondary {
+            background: linear-gradient(145deg, #4ecdc4, #44a08d);
+            box-shadow: 0 4px 15px rgba(68, 160, 141, 0.4);
+        }
+
+        .btn.secondary:hover {
+            box-shadow: 0 6px 20px rgba(68, 160, 141, 0.6);
+        }
+
+        .win-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .win-content {
+            background: linear-gradient(145deg, #ff9a9e, #fecfef);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            color: #333;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            animation: popIn 0.5s ease-out;
+            max-width: 350px;
+            width: 90%;
+        }
+
+        @keyframes popIn {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .win-title {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #ff6b6b;
+        }
+
+        .win-stats {
+            font-size: 1.2rem;
+            margin: 20px 0;
+            line-height: 1.5;
+        }
+
+        .best-time {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #666;
+            font-style: italic;
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .game-container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2rem;
+                margin-bottom: 15px;
+            }
+
+            .game-info {
+                padding: 12px;
+                margin-bottom: 15px;
+            }
+
+            .timer, .moves {
+                font-size: 1rem;
+            }
+
+            .controls {
+                gap: 10px;
+            }
+
+            .btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+
+            .win-content {
+                padding: 30px;
+            }
+
+            .win-title {
+                font-size: 2rem;
+            }
+        }
+
+        /* Landscape mobile adjustments */
+        @media (max-height: 600px) and (orientation: landscape) {
+            body {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+                margin-bottom: 10px;
+            }
+
+            .game-info {
+                margin-bottom: 10px;
+            }
+
+            .game-board {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>15 Puzzle</h1>
+        
+        <div class="game-info">
+            <div class="timer">
+                <span id="time">00:00</span>
+            </div>
+            <div class="moves">
+                <span id="moves">0</span>
+            </div>
+        </div>
+        
+        <div class="game-board">
+            <canvas id="gameCanvas" width="320" height="320"></canvas>
+        </div>
+        
+        <div class="controls">
+            <button class="btn" id="restartBtn">Restart</button>
+            <button class="btn secondary" id="shuffleBtn">Shuffle</button>
+        </div>
+    </div>
+
+    <!-- Win Popup -->
+    <div class="win-popup" id="winPopup">
+        <div class="win-content">
+            <div class="win-title">🎉 You Won!</div>
+            <div class="win-stats">
+                <div>Time: <strong id="finalTime"></strong></div>
+                <div>Moves: <strong id="finalMoves"></strong></div>
+            </div>
+            <div class="best-time" id="bestTime"></div>
+            <button class="btn" onclick="closeWinPopup()">Play Again</button>
+        </div>
+    </div>
+
+    <script>
+        class SlidingPuzzle {
+            constructor() {
+                this.canvas = document.getElementById('gameCanvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.size = 4;
+                this.tileSize = 80;
+                this.gap = 0;
+                this.animationSpeed = 8;
+                
+                // Game state
+                this.board = [];
+                this.emptyPos = { x: 3, y: 3 };
+                this.moves = 0;
+                this.startTime = null;
+                this.gameTimer = null;
+                this.isAnimating = false;
+                this.animatingTile = null;
+                
+                // Touch handling
+                this.touchStartPos = null;
+                this.minSwipeDistance = 50;
+                
+                this.setupCanvas();
+                this.initializeBoard();
+                this.bindEvents();
+                this.draw();
+                this.updateDisplay();
+            }
+
+            setupCanvas() {
+                // Make canvas responsive
+                const containerWidth = Math.min(400, window.innerWidth - 80);
+                const canvasSize = Math.min(320, containerWidth - 40);
+                
+                this.canvas.width = canvasSize;
+                this.canvas.height = canvasSize;
+                this.canvas.style.width = canvasSize + 'px';
+                this.canvas.style.height = canvasSize + 'px';
+                
+                this.tileSize = Math.floor((canvasSize - (this.size - 1) * this.gap) / this.size);
+                
+                // High DPI support
+                const dpr = window.devicePixelRatio || 1;
+                this.canvas.width = canvasSize * dpr;
+                this.canvas.height = canvasSize * dpr;
+                this.canvas.style.width = canvasSize + 'px';
+                this.canvas.style.height = canvasSize + 'px';
+                this.ctx.scale(dpr, dpr);
+            }
+
+            initializeBoard() {
+                // Create solved board
+                this.board = [];
+                for (let y = 0; y < this.size; y++) {
+                    this.board[y] = [];
+                    for (let x = 0; x < this.size; x++) {
+                        if (x === 3 && y === 3) {
+                            this.board[y][x] = 0; // Empty space
+                        } else {
+                            this.board[y][x] = y * this.size + x + 1;
+                        }
+                    }
+                }
+                this.emptyPos = { x: 3, y: 3 };
+                this.shuffleBoard();
+            }
+
+            shuffleBoard() {
+                // Shuffle by making random valid moves
+                const moves = 1000;
+                const directions = [
+                    { dx: 0, dy: -1 }, // Up
+                    { dx: 0, dy: 1 },  // Down
+                    { dx: -1, dy: 0 }, // Left
+                    { dx: 1, dy: 0 }   // Right
+                ];
+
+                for (let i = 0; i < moves; i++) {
+                    const validMoves = directions.filter(dir => {
+                        const newX = this.emptyPos.x + dir.dx;
+                        const newY = this.emptyPos.y + dir.dy;
+                        return newX >= 0 && newX < this.size && newY >= 0 && newY < this.size;
+                    });
+
+                    if (validMoves.length > 0) {
+                        const move = validMoves[Math.floor(Math.random() * validMoves.length)];
+                        const newX = this.emptyPos.x + move.dx;
+                        const newY = this.emptyPos.y + move.dy;
+                        
+                        // Swap tiles
+                        this.board[this.emptyPos.y][this.emptyPos.x] = this.board[newY][newX];
+                        this.board[newY][newX] = 0;
+                        this.emptyPos = { x: newX, y: newY };
+                    }
+                }
+                
+                this.resetGame();
+            }
+
+            resetGame() {
+                this.moves = 0;
+                this.startTime = null;
+                if (this.gameTimer) {
+                    clearInterval(this.gameTimer);
+                    this.gameTimer = null;
+                }
+                this.updateDisplay();
+            }
+
+            startTimer() {
+                if (!this.startTime) {
+                    this.startTime = Date.now();
+                    this.gameTimer = setInterval(() => {
+                        this.updateDisplay();
+                    }, 100);
+                }
+            }
+
+            bindEvents() {
+                // Mouse events
+                this.canvas.addEventListener('click', (e) => this.handleClick(e));
+                
+                // Touch events
+                this.canvas.addEventListener('touchstart', (e) => this.handleTouchStart(e));
+                this.canvas.addEventListener('touchend', (e) => this.handleTouchEnd(e));
+                this.canvas.addEventListener('touchmove', (e) => e.preventDefault());
+
+                // Buttons
+                document.getElementById('restartBtn').addEventListener('click', () => {
+                    this.initializeBoard();
+                    this.draw();
+                });
+                
+                document.getElementById('shuffleBtn').addEventListener('click', () => {
+                    this.shuffleBoard();
+                    this.draw();
+                });
+
+                // Window resize
+                window.addEventListener('resize', () => {
+                    this.setupCanvas();
+                    this.draw();
+                });
+            }
+
+            handleClick(e) {
+                if (this.isAnimating) return;
+                
+                const rect = this.canvas.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                this.handleMove(x, y);
+            }
+
+            handleTouchStart(e) {
+                if (this.isAnimating) return;
+                e.preventDefault();
+                
+                const touch = e.touches[0];
+                const rect = this.canvas.getBoundingClientRect();
+                this.touchStartPos = {
+                    x: touch.clientX - rect.left,
+                    y: touch.clientY - rect.top
+                };
+            }
+
+            handleTouchEnd(e) {
+                if (this.isAnimating || !this.touchStartPos) return;
+                e.preventDefault();
+                
+                const touch = e.changedTouches[0];
+                const rect = this.canvas.getBoundingClientRect();
+                const endPos = {
+                    x: touch.clientX - rect.left,
+                    y: touch.clientY - rect.top
+                };
+                
+                const dx = endPos.x - this.touchStartPos.x;
+                const dy = endPos.y - this.touchStartPos.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                // If it's a tap (small movement), treat as click
+                if (distance < this.minSwipeDistance) {
+                    this.handleMove(this.touchStartPos.x, this.touchStartPos.y);
+                } else {
+                    // Handle swipe
+                    this.handleSwipe(dx, dy, this.touchStartPos.x, this.touchStartPos.y);
+                }
+                
+                this.touchStartPos = null;
+            }
+
+            handleMove(x, y) {
+                const col = Math.floor(x / (this.tileSize + this.gap));
+                const row = Math.floor(y / (this.tileSize + this.gap));
+                
+                if (this.isValidMove(col, row)) {
+                    this.moveTile(col, row);
+                }
+            }
+
+            handleSwipe(dx, dy, startX, startY) {
+                const col = Math.floor(startX / (this.tileSize + this.gap));
+                const row = Math.floor(startY / (this.tileSize + this.gap));
+                
+                if (col < 0 || col >= this.size || row < 0 || row >= this.size) return;
+                
+                // Determine swipe direction
+                const isHorizontal = Math.abs(dx) > Math.abs(dy);
+                
+                if (isHorizontal) {
+                    // Swipe left/right
+                    if (dx > 0 && col > 0 && this.emptyPos.x === col - 1 && this.emptyPos.y === row) {
+                        // Swipe right, empty is to the left
+                        this.moveTile(col, row);
+                    } else if (dx < 0 && col < this.size - 1 && this.emptyPos.x === col + 1 && this.emptyPos.y === row) {
+                        // Swipe left, empty is to the right
+                        this.moveTile(col, row);
+                    }
+                } else {
+                    // Swipe up/down
+                    if (dy > 0 && row > 0 && this.emptyPos.x === col && this.emptyPos.y === row - 1) {
+                        // Swipe down, empty is above
+                        this.moveTile(col, row);
+                    } else if (dy < 0 && row < this.size - 1 && this.emptyPos.x === col && this.emptyPos.y === row + 1) {
+                        // Swipe up, empty is below
+                        this.moveTile(col, row);
+                    }
+                }
+            }
+
+            isValidMove(col, row) {
+                if (col < 0 || col >= this.size || row < 0 || row >= this.size) return false;
+                
+                const dx = Math.abs(col - this.emptyPos.x);
+                const dy = Math.abs(row - this.emptyPos.y);
+                
+                return (dx === 1 && dy === 0) || (dx === 0 && dy === 1);
+            }
+
+            moveTile(col, row) {
+                this.startTimer();
+                
+                const tileValue = this.board[row][col];
+                
+                // Setup animation
+                this.isAnimating = true;
+                this.animatingTile = {
+                    value: tileValue,
+                    fromX: col * (this.tileSize + this.gap),
+                    fromY: row * (this.tileSize + this.gap),
+                    toX: this.emptyPos.x * (this.tileSize + this.gap),
+                    toY: this.emptyPos.y * (this.tileSize + this.gap),
+                    currentX: col * (this.tileSize + this.gap),
+                    currentY: row * (this.tileSize + this.gap)
+                };
+                
+                // Update board immediately
+                this.board[row][col] = 0;
+                this.board[this.emptyPos.y][this.emptyPos.x] = tileValue;
+                
+                // Update empty position
+                this.emptyPos = { x: col, y: row };
+                
+                // Animate
+                this.animateTileMovement();
+                
+                this.moves++;
+                this.updateDisplay();
+                
+                // Check for win after animation completes
+                setTimeout(() => {
+                    if (this.checkWin()) {
+                        this.showWinPopup();
+                    }
+                }, 200);
+            }
+
+            animateTileMovement() {
+                const tile = this.animatingTile;
+                const dx = tile.toX - tile.fromX;
+                const dy = tile.toY - tile.fromY;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                const steps = Math.ceil(distance / this.animationSpeed);
+                const stepX = dx / steps;
+                const stepY = dy / steps;
+                
+                let currentStep = 0;
+                
+                const animate = () => {
+                    if (currentStep >= steps) {
+                        this.isAnimating = false;
+                        this.animatingTile = null;
+                        this.draw();
+                        return;
+                    }
+                    
+                    tile.currentX = tile.fromX + stepX * currentStep;
+                    tile.currentY = tile.fromY + stepY * currentStep;
+                    
+                    this.draw();
+                    currentStep++;
+                    requestAnimationFrame(animate);
+                };
+                
+                animate();
+            }
+
+            draw() {
+                // Clear canvas
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                // Draw background
+                this.ctx.fillStyle = '#f8f9fa';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                // Draw tiles
+                for (let y = 0; y < this.size; y++) {
+                    for (let x = 0; x < this.size; x++) {
+                        const value = this.board[y][x];
+                        if (value !== 0) {
+                            // Skip if this tile is currently animating
+                            if (this.animatingTile && this.animatingTile.value === value) {
+                                continue;
+                            }
+                            this.drawTile(x * (this.tileSize + this.gap), y * (this.tileSize + this.gap), value);
+                        }
+                    }
+                }
+                
+                // Draw animating tile
+                if (this.animatingTile) {
+                    this.drawTile(this.animatingTile.currentX, this.animatingTile.currentY, this.animatingTile.value);
+                }
+            }
+
+            drawTile(x, y, value) {
+                const ctx = this.ctx;
+                
+                // Tile shadow
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+                ctx.fillRect(x + 2, y + 2, this.tileSize, this.tileSize);
+                
+                // Tile background
+                const gradient = ctx.createLinearGradient(x, y, x + this.tileSize, y + this.tileSize);
+                gradient.addColorStop(0, '#4ecdc4');
+                gradient.addColorStop(1, '#44a08d');
+                
+                ctx.fillStyle = gradient;
+                ctx.fillRect(x, y, this.tileSize, this.tileSize);
+                
+                // Tile border
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(x, y, this.tileSize, this.tileSize);
+                
+                // Tile number
+                ctx.fillStyle = '#ffffff';
+                ctx.font = `bold ${this.tileSize * 0.4}px Arial`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                
+                const centerX = x + this.tileSize / 2;
+                const centerY = y + this.tileSize / 2;
+                
+                // Text shadow
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+                ctx.fillText(value.toString(), centerX + 1, centerY + 1);
+                
+                // Text
+                ctx.fillStyle = '#ffffff';
+                ctx.fillText(value.toString(), centerX, centerY);
+            }
+
+            checkWin() {
+                for (let y = 0; y < this.size; y++) {
+                    for (let x = 0; x < this.size; x++) {
+                        if (x === 3 && y === 3) {
+                            if (this.board[y][x] !== 0) return false;
+                        } else {
+                            if (this.board[y][x] !== y * this.size + x + 1) return false;
+                        }
+                    }
+                }
+                return true;
+            }
+
+            showWinPopup() {
+                if (this.gameTimer) {
+                    clearInterval(this.gameTimer);
+                    this.gameTimer = null;
+                }
+                
+                const totalTime = Math.floor((Date.now() - this.startTime) / 1000);
+                const timeStr = this.formatTime(totalTime);
+                
+                document.getElementById('finalTime').textContent = timeStr;
+                document.getElementById('finalMoves').textContent = this.moves;
+                
+                // Save and display best time
+                const bestTime = localStorage.getItem('puzzleBestTime');
+                const bestMoves = localStorage.getItem('puzzleBestMoves');
+                
+                if (!bestTime || totalTime < parseInt(bestTime) || (totalTime === parseInt(bestTime) && this.moves < parseInt(bestMoves))) {
+                    localStorage.setItem('puzzleBestTime', totalTime);
+                    localStorage.setItem('puzzleBestMoves', this.moves);
+                    document.getElementById('bestTime').innerHTML = '🏆 New Best Record!';
+                } else {
+                    document.getElementById('bestTime').innerHTML = `Best: ${this.formatTime(bestTime)} in ${bestMoves} moves`;
+                }
+                
+                document.getElementById('winPopup').style.display = 'flex';
+            }
+
+            updateDisplay() {
+                document.getElementById('moves').textContent = this.moves;
+                
+                if (this.startTime) {
+                    const elapsed = Math.floor((Date.now() - this.startTime) / 1000);
+                    document.getElementById('time').textContent = this.formatTime(elapsed);
+                } else {
+                    document.getElementById('time').textContent = '00:00';
+                }
+            }
+
+            formatTime(seconds) {
+                const mins = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }
+        }
+
+        // Initialize game when page loads
+        let game;
+        
+        window.addEventListener('DOMContentLoaded', () => {
+            game = new SlidingPuzzle();
+        });
+
+        function closeWinPopup() {
+            document.getElementById('winPopup').style.display = 'none';
+            game.initializeBoard();
+            game.draw();
+        }
+    </script>
+</body>
+</html>
