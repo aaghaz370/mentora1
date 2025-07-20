@@ -382,6 +382,128 @@ section.offer .subtitle {
   }
 }
 
+
+/* FOOTER */
+.site-footer {
+  background:rgba(0, 255, 255, 0.2);
+  color: #ccc;
+  padding-top: 60px;
+  font-family: 'Poppins', sans-serif;
+}
+.footer-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+  gap: 40px;
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 20px;
+}
+.footer-block h4 {
+  color:#62d0ff;
+  margin-bottom: 16px;
+  font-size: 1.2rem;
+}
+.footer-block p,
+.footer-block a {
+  font-size: 0.95rem;
+  color: #aaa;
+  text-decoration: none;
+  line-height: 1.6;
+}
+
+/* Links hover underline slide */
+.footer-block ul li {
+  margin-bottom: 8px;
+}
+.footer-block ul li a {
+  position: relative;
+  padding-bottom: 2px;
+  transition: color 0.3s;
+}
+.footer-block ul li a::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 0; height: 2px;
+  background:#62d0ff;
+  transition: width 0.3s ease;
+}
+.footer-block ul li a:hover {
+  color: #fff;
+}
+.footer-block ul li a:hover::after {
+  width: 100%;
+}
+
+/* Social icons with pop & glow */
+.social-icons {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.social-icons a {
+  font-size: 1.2rem;
+  color: #888;
+  transition: transform 0.3s ease, color 0.3s ease, text-shadow 0.3s;
+}
+.social-icons a:hover {
+  color: #62d0ff;
+  transform: scale(1.3) rotate(10deg);
+  text-shadow: 0 0 8px rgba(0, 255, 255, 0.2);
+}
+
+/* Subscribe form */
+.subscribe-form {
+  display: flex;
+  gap: 8px;
+}
+.subscribe-form input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #333;
+  border-radius: 4px;
+  background: #111;
+  color: #eee;
+  transition: border-color 0.3s;
+}
+.subscribe-form input:focus {
+  outline: none;
+  border-color: #ff3c5a;
+}
+.subscribe-form button {
+  padding: 8px 16px;
+  border: none;
+  background: #ff3c5a;
+  color: #111;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+.subscribe-form button:hover {
+  background: #e63248;
+  box-shadow: 0 4px 12px rgba(255,60,90,0.5);
+}
+
+/* Footer bottom */
+.footer-bottom {
+  text-align: center;
+  padding: 20px 0;
+  border-top: 1px solid #222;
+  margin-top: 40px;
+}
+.footer-bottom p {
+  font-size: 0.85rem;
+  color: #cac9c9;
+}
+
+/* Responsive */
+@media(max-width: 768px) {
+  .subscribe-form {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -503,6 +625,54 @@ section.offer .subtitle {
     </div>
   </div>
 </section>
+
+
+<!-- FOOTER SECTION -->
+<footer class="site-footer">
+  <div class="footer-container">
+    <!-- About -->
+    <div class="footer-block">
+      <h4>About Notora</h4>
+      <p>Your free, ad‑free hub for PW, KGS & Next Topper lectures. Empowering every learner — always.</p>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="footer-block">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#why-choose-us">Why Choose Us</a></li>
+        <li><a href="#offer">What We Offer</a></li>
+        <li><a href="courses.html">All Courses</a></li>
+      </ul>
+    </div>
+
+    <!-- Contact -->
+    <div class="footer-block">
+      <h4>Get In Touch</h4>
+      <p>Email: <a href="mailto:support@notora.com">support@notora.com</a></p>
+      <p>Phone: <a href="tel:+911234567890">+91 12345 67890</a></p>
+    </div>
+
+    <!-- Social + Subscribe -->
+    <div class="footer-block">
+      <h4>Stay Connected</h4>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+      </div>
+      <!-- <form class="subscribe-form">
+        <input type="email" placeholder="Your email" required>
+        <button type="submit">Subscribe</button>
+      </form> -->
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Notora. All Rights Reserved.</p>
+  </div>
+</footer>
 
 
 </body>
