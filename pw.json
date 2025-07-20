@@ -1,0 +1,19 @@
+[
+  {
+    "goal": "NEET",
+    "batches": [
+      { "title": "Arjuna NEET 2.0 2026", "starts": "26 May 2025", "ends": "30 Jun 2027" },
+      { "title": "Arjuna MHTCET 2026", "starts": "19 May 2025", "ends": "31 May 2027" },
+      { "title": "Arjuna NEET Hindi 2026", "starts": "05 May 2025", "ends": "30 Jun 2027" }
+      
+    ]
+  },
+  {
+    "goal": "IIT JEE",
+    "batches": [
+      { "title": "Arjuna JEE Main 2026", "starts": "15 Jun 2025", "ends": "31 Jul 2027" }
+     
+    ]
+  }
+  
+]

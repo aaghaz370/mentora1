@@ -1,0 +1,55 @@
+{
+  "online": [
+    {
+      "name": "Arjuna NEET 3.0 2026",
+      "start": "14 Jul 2025",
+      "end": "30 Jun 2027",
+      "price": 4500,
+      "discount": 10,
+      "image": "https://pw.imgcdn.in/arjuna-3.0.jpg"
+    },
+    {
+      "name": "Arjuna NEET Hindi 2.0 2026",
+      "start": "22 Jul 2025",
+      "end": "30 Jun 2027",
+      "price": 2999,
+      "discount": 38,
+      "image": "https://pw.imgcdn.in/arjuna-hindi-2.0.jpg"
+    },
+    {
+      "name": "Arjuna NEET 2.0 2026",
+      "start": "26 May 2025",
+      "end": "30 Jun 2027",
+      "price": 4900,
+      "discount": 8,
+      "image": "https://pw.imgcdn.in/arjuna-2.0.jpg"
+    },
+    {
+      "name": "Arjuna MHTCET 2026",
+      "start": "19 May 2025",
+      "end": "31 May 2027",
+      "price": 3799,
+      "discount": 16,
+      "image": "https://pw.imgcdn.in/arjuna-mhtcet.jpg"
+    },
+    {
+      "name": "Arjuna NEET Hindi 2026",
+      "start": "05 May 2025",
+      "end": "30 Jun 2027",
+      "price": 3199,
+      "discount": 36,
+      "image": "https://pw.imgcdn.in/arjuna-hindi-2026.jpg"
+    }
+  ],
+  "offline": [],
+  "power": [
+    {
+      "name": "Arjuna Power Batch - NEET 2027 (Class 11)",
+      "start": "15 Jul 2025",
+      "end": "30 Jun 2027",
+      "price": 5000,
+      "discount": 0,
+      "image": "https://pw.imgcdn.in/arjuna-power.jpg"
+    }
+  ]
+}

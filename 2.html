@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physics Wallah - Batches</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: #f8f9fa;
+            color: #333;
+        }
+
+        .header {
+            background: white;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            height: 65px;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            background: #000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .brand-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .class-selector {
+            background: #6366f1;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .points {
+            background: #f3f4f6;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .study-btn {
+            background: #6366f1;
+            color: white;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 65px;
+            width: 240px;
+            height: calc(100vh - 65px);
+            background: white;
+            padding: 0;
+            overflow-y: auto;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+            z-index: 90;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-size: 14px;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .nav-item:hover {
+            background: #f9fafb;
+        }
+
+        .nav-item.active {
+            background: #ede9fe;
+            border-right: 3px solid #6366f1;
+            color: #6366f1;
+            font-weight: 500;
+        }
+
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .nav-badge {
+            background: #f97316;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            margin-left: auto;
+            font-weight: 500;
+        }
+
+        .main-content {
+            margin-left: 240px;
+            padding: 0;
+            min-height: calc(100vh - 65px);
+        }
+
+        .filters-section {
+            background: white;
+            padding: 15px 20px;
+            border-bottom: 1px solid #e5e7eb;
+            position: sticky;
+            top: 65px;
+            z-index: 80;
+        }
+
+        .filters {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .filter-icon {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #6b7280;
+            margin-right: 15px;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: 1px solid #d1d5db;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .filter-btn:hover {
+            background: #f9fafb;
+        }
+
+        .filter-btn.active {
+            background: #6366f1;
+            color: white;
+            border-color: #6366f1;
+        }
+
+        .content-area {
+            padding: 20px;
+        }
+
+        .batch-count {
+            color: #374151;
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 25px;
+        }
+
+        .batch-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .batch-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid #e5e7eb;
+        }
+
+        .batch-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .batch-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 20px 20px 15px;
+        }
+
+        .batch-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #111827;
+        }
+
+        .batch-tag {
+            background: #fbbf24;
+            color: #92400e;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: lowercase;
+        }
+
+        .batch-tag.new {
+            background: #fbbf24;
+            color: #92400e;
+        }
+
+        .batch-image {
+            width: 100%;
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+            margin: 0 20px 15px;
+            width: calc(100% - 40px);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .batch-content {
+            padding: 0 20px 20px;
+        }
+
+        .batch-target {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .batch-dates {
+            color: #6b7280;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .batch-plans {
+            background: #fef3c7;
+            color: #d97706;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .batch-plans.infinity {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .infinity-badges {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .infinity-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .infinity-pro {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .infinity-green {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .batch-pricing {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .price-section {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #111827;
+        }
+
+        .original-price {
+            color: #9ca3af;
+            text-decoration: line-through;
+            font-size: 14px;
+        }
+
+        .price-note {
+            color: #6b7280;
+            font-size: 12px;
+        }
+
+        .discount {
+            background: #dcfce7;
+            color: #166534;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .batch-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .explore-btn {
+            flex: 1;
+            padding: 10px 16px;
+            border: 1px solid #6366f1;
+            background: white;
+            color: #6366f1;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .buy-btn {
+            flex: 1;
+            padding: 10px 16px;
+            background: #6366f1;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .side-banner {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 320px;
+            z-index: 70;
+        }
+
+        .banner-card {
+            background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+            border-radius: 12px;
+            overflow: hidden;
+            color: white;
+            position: relative;
+        }
+
+        .hinglish-tag {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #dc2626;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .banner-content {
+            padding: 25px;
+        }
+
+        .banner-logo {
+            width: 60px;
+            height: 60px;
+            background: #f97316;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            font-size: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .banner-text {
+            font-size: 12px;
+            margin-bottom: 5px;
+            opacity: 0.9;
+        }
+
+        .banner-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .banner-title .highlight {
+            color: #f97316;
+        }
+
+        .banner-subtitle {
+            font-size: 11px;
+            opacity: 0.8;
+            margin-bottom: 15px;
+        }
+
+        .banner-features {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .banner-feature {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+        }
+
+        .feature-icon {
+            width: 16px;
+            height: 16px;
+            background: #f97316;
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8px;
+        }
+
+        .banner-pricing {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .banner-price {
+            background: #f97316;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+
+        .banner-contact {
+            font-size: 11px;
+            text-align: center;
+        }
+
+        .banner-phone {
+            font-size: 14px;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+
+        .banner-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .banner-buy-btn, .banner-explore-btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .banner-buy-btn {
+            background: #f97316;
+            color: white;
+            border: none;
+        }
+
+        .banner-explore-btn {
+            background: #374151;
+            color: white;
+            border: 1px solid #4b5563;
+        }
+
+        .goal-selector {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .goal-modal {
+            background: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 1000px;
+            max-height: 80%;
+            overflow-y: auto;
+            padding: 30px;
+        }
+
+        .goal-header-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .back-btn {
+            cursor: pointer;
+            font-size: 24px;
+            color: #6b7280;
+            padding: 8px;
+        }
+
+        .goal-header {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .goals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+        }
+
+        .goal-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .goal-card:hover {
+            border-color: #6366f1;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
+        }
+
+        .goal-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .goal-info {
+            flex: 1;
+        }
+
+        .goal-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #111827;
+        }
+
+        .goal-subtitle {
+            color: #6b7280;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .whatsapp-icon {
+            width: 20px;
+            height: 20px;
+            background: #25d366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            position: absolute;
+            top: 15px;
+            right: 45px;
+        }
+
+        .infinity-tag {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #10b981;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 1200px) {
+            .side-banner {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .batch-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .goals-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .goal-card {
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="logo-section">
+            <div class="logo">PW</div>
+            <span class="brand-name">Physics Wallah</span>
+        </div>
+        
+        <button class="class-selector" onclick="openGoalSelector()">
+            <span>📚</span>
+            <span id="currentGoal">11th - NEET</span>
+            <span>▼</span>
+        </button>
+        
+        <div class="user-section">
+            <div class="points">⚡ <span>0</span></div>
+            <span>Hi, Aaghaz</span>
+            <button class="study-btn">Study</button>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="nav-item">
+            <div class="nav-icon">📖</div>
+            <span>Study</span>
+        </div>
+        <div class="nav-item active">
+            <div class="nav-icon">📚</div>
+            <span>Batches</span>
+        </div>
+        <div class="nav-item">
+            <div class="nav-icon">📴</div>
+            <span>Offline</span>
+        </div>
+        <div class="nav-item">
+            <div class="nav-icon">⚡</div>
+            <span>Power Batch</span>
+        </div>
+        <div class="nav-item">
+            <div class="nav-icon">🛒</div>
+            <span>PW Store</span>
+        </div>
+        <div class="nav-item">
+            <div class="nav-icon">📝</div>
+            <span>Test Series</span>
+        </div>
+        <div class="nav-item">
+            <div class="nav-icon">🏆</div>
+            <span>Scholarship</span>
+        </div>
+        <div class="nav-item">
+            <div class="nav-icon">🏠</div>
+            <span>VP-Residential Program</span>
+            <span class="nav-badge">NEW</span>
+        </div>
+        <div class="nav-item">
+            <div class="nav-icon">🎯</div>
+            <span>DISHA</span>
+            <span class="nav-badge">NEW</span>
+        </div>
+        <div class="nav-item">
+            <div class="nav-icon">📚</div>
+            <span>PW Books App</span>
+            <span class="nav-badge">NEW</span>
+        </div>
+        <div class="nav-item">
+            <div class="nav-icon">💼</div>
+            <span>Upskilling - Job Assistance</span>
+        </div>
+        <div class="nav-item">
+            <div class="nav-icon">💰</div>
+            <span>Refer & Earn</span>
+        </div>
+        <div class="nav-item">
+            <div class="nav-icon">📞</div>
+            <span>Contact Us</span>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Filters Section -->
+        <div class="filters-section">
+            <div class="filters">
+                <div class="filter-icon">
+                    <span>⚙️</span>
+                    <span>Filter</span>
+                </div>
+                <button class="filter-btn active" onclick="filterBatches('Online')">Online</button>
+                <button class="filter-btn" onclick="filterBatches('Offline')">Offline</button>
+                <button class="filter-btn" onclick="filterBatches('Power Batch')">Power Batch</button>
+                <button class="filter-btn" onclick="filterBatches('State Exams')">State Exams</button>
+                <button class="filter-btn" onclick="filterBatches('Free')">Free</button>
+                <button class="filter-btn" onclick="filterBatches('Combo')">Combo</button>
+                <button class="filter-btn" onclick="filterBatches('Study Abroad')">Study Abroad</button>
+                <button class="filter-btn" onclick="filterBatches('Real Test')">Real Test</button>
+            </div>
+        </div>
+
+        <!-- Content Area -->
+        <div class="content-area">
+            <div class="batch-count" id="batchCount">28 Batches available</div>
+
+            <!-- Batch Grid -->
+            <div class="batch-grid" id="batchGrid">
+                <!-- Batches will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Side Banner -->
+    <div class="side-banner">
+        <div class="banner-card">
+            <div class="hinglish-tag">Hinglish</div>
+            <div class="banner-content">
+                <div class="banner-logo">POWER BATCH</div>
+                
+                <div class="banner-text">Experience Classroom like <span class="highlight">learning at home</span> with</div>
+                <div class="banner-title">ARJUNA <span class="highlight">POWER BATCH</span></div>
+                <div class="banner-subtitle">NEET 2027 | FOR CLASS 11</div>
+                
+                <div class="banner-features">
+                    <div class="banner-feature">
+                        <div class="feature-icon">👥</div>
+                        <span>Small Classroom Size</span>
+                    </div>
+                    <div class="banner-feature">
+                        <div class="feature-icon">🎯</div>
+                        <span>One to One live Doubt Solving</span>
+                    </div>
+                    <div class="banner-feature">
+                        <div class="feature-icon">💻</div>
+                        <span>Interactive Live Learning</span>
+                    </div>
+                </div>
+                
+                <div class="banner-pricing">
+                    <div class="banner-text">Book your seat at</div>
+                    <div class="banner-price">₹5,000/-</div>
+                    <div class="banner-contact">
+                        <div>Call us ☎️</div>
+                        <div class="banner-phone">8047359939</div>
+                    </div>
+                </div>
+                
+                <div class="banner-actions">
+                    <button class="banner-buy-btn">Buy Now</button>
+                    <button class="banner-explore-btn">Explore Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Goal Selector Modal -->
+    <div class="goal-selector" id="goalSelector">
+        <div class="goal-modal">
+            <div class="goal-header-section">
+                <span class="back-btn" onclick="closeGoalSelector()">←</span>
+                <div class="goal-header">Select the goal you want...</div>
+                <div></div>
+            </div>
+            
+            <div class="goals-grid">
+                <div class="goal-card" onclick="selectGoal('NEET', '11th - NEET')">
+                    <div class="goal-icon" style="background: #6366f1;">🎯</div>
+                    <div class="goal-info">
+                        <div class="goal-title">NEET</div>
+                        <div class="goal-subtitle">Class 11 | Class 12 | Class 12+</div>
+                    </div>
+                </div>
+                
+                <div class="goal-card" onclick="selectGoal('JEE', '11th - IIT JEE')">
+                    <div class="goal-icon" style="background: #f59e0b;">⚡</div>
+                    <div class="goal-info">
+                        <div class="goal-title">IIT JEE</div>
+                        <div class="goal-subtitle">Class 11 | Class 12 | Class 12+</div>
+                    </div>
+                </div>
+                
+                <div class="goal-card" onclick="selectGoal('School Boards', 'Class 9-12 - Boards')">
+                    <div class="goal-icon" style="background: #ec4899;">📚</div>
+                    <div class="goal-info">
+                        <div class="goal-title">School Boards ( Class 9 to 12 )</div>
+                        <div class="goal-subtitle">Class 9 | Class 10 | Class 11 | Class 12</div>
+                    </div>
+                </div>
+                
+                <div class="goal-card" onclick="selectGoal('OnlyIAS', 'UPSC - OnlyIAS')">
+                    <div class="goal-icon" style="background: #f97316;">🏛️</div>
+                    <div class="goal-info">
+                        <div class="goal-title">PW OnlyIAS</div>
+                        <div class="goal-subtitle">UPSC | State PSC</div>
+                    </div>
+                </div>
+                
+                <div class="goal-card" onclick="selectGoal('School Preparation', 'School Prep')">
+                    <div class="goal-icon" style="background: #8b5cf6;">🎓</div>
+                    <div class="goal-info">
+                        <div class="goal-title">School Preparation</div>
+                        <div class="goal-subtitle">Class 3rd to 8th | International Boards | Teacher Training | Curriculum - Books</div>
+                    </div>
+                </div>
+                
+                <div class="goal-card" onclick="selectGoal('Olympiad', 'Olympiad')">
+                    <div class="goal-icon" style="background: #fbbf24;">🏆</div>
+                    <div class="goal-info">
+                        <div class="goal-title">Olympiad</div>
+                        <div class="goal-subtitle">Government Olympiad | Private Olympiad</div>
+                    </div>
+                </div>
+                
+                <div class="goal-card" onclick="selectGoal('Govt Exams', 'Govt Exams')">
+                    <div class="goal-icon" style="background: #10b981;">🏢</div>
+                    <div class="goal-info">
+                        <div class="goal-title">Govt. Exams</div>
+                        <div class="goal-subtitle">SSC | Banking | Teaching | Railway | JAIIB & CAIIB | Nursing | Judiciary | State Exams</div>
+                    </div>
+                </div>
+                
+                <div class="goal-card" onclick="selectGoal('UG PG Entrance', 'UG & PG Entrance')">
+                    <div class="goal-icon" style="background: #3b82f6;">🎯</div>
+                    <div class="goal-info">
+                        <div class="goal-title">UG & PG Entrance Exam</div>
+                        <div class="goal-subtitle">MBA | IPMAT | IIT Jam & CSIR NET | CLAT | CUET | UGC NET | NIFT, NID & UCEED | B.ARCH | CUET PG | Pharma</div>
+                    </div>
+                </div>
+                
+                <div class="goal-card" onclick="selectGoal('ESE GATE', 'ESE GATE & Engineering')">
+                    <div class="goal-icon" style="background: #f97316;">⚙️</div>
+                    <div class="goal-info">
+                        <div class="goal-title">ESE GATE & Engineering</div>
+                        <div class="goal-subtitle">ESE | GATE | AE/JE</div>
+                    </div>
+                </div>
+                
+                <div class="goal-card" onclick="selectGoal('Finance', 'Finance Course')">
+                    <div class="goal-icon" style="background: #06b6d4;">💰</div>
+                    <div class="goal-info">
+                        <div class="goal-title">Finance Course</div>
+                        <div class="goal-subtitle">CA | CS | ACCA | Financial Modelling | Taxation & Accounting | Certificates</div>
+                    </div>
+                </div>
+                
+                
