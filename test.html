@@ -1,1 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Study Time</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* body {
+      height: 100vh;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    } */
+     body {
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: white;
+  margin: 0;
+  padding: 0;
+}
+
+
+    .container {
+      background: rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 1000px;
+      width: 90%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
+      gap: 30px;
+    }
+
+    .left {
+      flex: 1;
+    }
+
+    .left h1 {
+      font-size: 2.7rem;
+      margin-bottom: 10px;
+    }
+
+    .left p {
+      font-size: 1.1rem;
+      color: #d0d0d0;
+      margin-top: 10px;
+      line-height: 1.6;
+    }
+
+    .start-btn {
+      margin-top: 25px;
+      padding: 14px 30px;
+      border: none;
+      border-radius: 30px;
+      background: linear-gradient(to right, #4facfe, #00f2fe);
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      color: white;
+      transition: all 0.3s ease;
+    }
+
+    .start-btn:hover {
+      transform: scale(1.05);
+    }
+
+    .right {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .study-illustration {
+      width: 100%;
+      max-width: 400px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        text-align: center;
+      }
+      .right {
+        margin-top: 20px;
+      }
+    }
+
+    /* why coose us */
+    
+
+   
+
+     section.why-choose {
+      max-width: 1200px;
+      margin: auto;
+      padding: 80px 20px;
+      text-align: center;
+      margin-top: 100px;
+    }
+
+    section.why-choose h2 {
+      font-size: 3rem;
+      color: #ff3c5a;
+      margin-bottom: 15px;
+    }
+
+    section.why-choose .subtitle {
+      color: #cccccc;
+      font-size: 1.1rem;
+      margin-bottom: 60px;
+    }
+
+    .card-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 30px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      padding: 35px 25px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(15px);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255, 60, 90, 0.12), transparent 60%);
+      transform: rotate(45deg);
+      transition: 0.6s ease;
+    }
+
+    .card:hover::before {
+      top: -20%;
+      left: -20%;
+    }
+
+    .icon-box {
+      font-size: 48px;
+      color: #ff3c5a;
+      margin-bottom: 20px;
+      transition: transform 0.4s ease;
+    }
+
+    .card:hover .icon-box {
+      animation: bounceIcon 0.6s ease;
+    }
+
+    @keyframes bounceIcon {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.4) rotate(10deg); }
+      100% { transform: scale(1); }
+    }
+
+    .card h3 {
+      font-size: 1.4rem;
+      color: #ffffff;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      color: #bbbbbb;
+      line-height: 1.5;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 30px rgba(255, 60, 90, 0.25);
+    }
+
+    @media (max-width: 768px) {
+      section.why-choose h2 {
+        font-size: 2.2rem;
+      }
+    }
+
+    section.hero {
+  min-height: 100vh;
+  display: center;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0px;
+}
+
+  </style>
+</head>
+<body>
+<section class="hero">
+  <div class="container">
+    <!-- existing left and right divs -->
+  
+
+  <div class="container">
+    <div class="left">
+      <h1>📚 Focus Mode: ON</h1>
+      <p>Your mind is your most powerful tool. Eliminate distractions, dive into knowledge, and let your journey begin. ✨</p>
+      <button class="start-btn" onclick="window.location.href='courses.html'">Start Learning</button>
+    </div>
+
+    <div class="right">
+      <!-- SVG animation embedded directly -->
+      <svg class="study-illustration" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <path fill="#ffffff" d="M256 0C114.836 0 0 114.836 0 256s114.836 256 256 256 256-114.836 256-256S397.164 0 256 0zm0 472c-119.293 0-216-96.707-216-216S136.707 40 256 40s216 96.707 216 216-96.707 216-216 216z"/>
+        <circle cx="256" cy="256" r="140" fill="#4facfe"/>
+        <circle cx="256" cy="230" r="50" fill="#fff"/>
+        <rect x="216" y="280" width="80" height="120" rx="10" fill="#fff"/>
+        <circle cx="246" cy="300" r="5" fill="#4facfe">
+          <animate attributeName="cy" values="300;290;300" dur="1s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="266" cy="320" r="5" fill="#4facfe">
+          <animate attributeName="cy" values="320;310;320" dur="1s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="256" cy="340" r="5" fill="#4facfe">
+          <animate attributeName="cy" values="340;330;340" dur="1s" repeatCount="indefinite" />
+        </circle>
+      </svg>
+    </div>
+  </div>
+</div>
+</section>
+
+  <section class="why-choose">
+    <h2>Why Choose Us?</h2>
+    <p class="subtitle">Notora gives you premium learning like PW — safe, student-first, and always free. 🚀</p>
+
+    <div class="card-container">
+      <div class="card">
+        <div class="icon-box"><i class="fas fa-chalkboard-teacher"></i></div>
+        <h3>Free Lectures</h3>
+        <p>Access top-quality educational content at zero cost. Learn like a pro with structured video lectures.</p>
+      </div>
+
+      <div class="card">
+        <div class="icon-box"><i class="fas fa-shield-alt"></i></div>
+        <h3>Fully Safe</h3>
+        <p>All resources are manually verified. No spam, no ads, no distractions. Just clean study time.</p>
+      </div>
+
+      <div class="card">
+        <div class="icon-box"><i class="fas fa-users"></i></div>
+        <h3>Built for Students</h3>
+        <p>We grow with you. Every update, every feature is shaped by your feedback. Made by learners, for learners.</p>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>
 

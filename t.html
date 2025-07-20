@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Why Choose Us - Notora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #0d0d0d;
+      color: white;
+    }
+
+    section.why-choose {
+      max-width: 1200px;
+      margin: auto;
+      padding: 80px 20px;
+      text-align: center;
+    }
+
+    section.why-choose h2 {
+      font-size: 3rem;
+      color: #ff3c5a;
+      margin-bottom: 15px;
+    }
+
+    section.why-choose .subtitle {
+      color: #cccccc;
+      font-size: 1.1rem;
+      margin-bottom: 60px;
+    }
+
+    .card-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 30px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      padding: 35px 25px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(15px);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255, 60, 90, 0.12), transparent 60%);
+      transform: rotate(45deg);
+      transition: 0.6s ease;
+    }
+
+    .card:hover::before {
+      top: -20%;
+      left: -20%;
+    }
+
+    .icon-box {
+      font-size: 48px;
+      color: #ff3c5a;
+      margin-bottom: 20px;
+      transition: transform 0.4s ease;
+    }
+
+    .card:hover .icon-box {
+      animation: bounceIcon 0.6s ease;
+    }
+
+    @keyframes bounceIcon {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.4) rotate(10deg); }
+      100% { transform: scale(1); }
+    }
+
+    .card h3 {
+      font-size: 1.4rem;
+      color: #ffffff;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      color: #bbbbbb;
+      line-height: 1.5;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 30px rgba(255, 60, 90, 0.25);
+    }
+
+    @media (max-width: 768px) {
+      section.why-choose h2 {
+        font-size: 2.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <section class="why-choose">
+    <h2>Why Choose Us?</h2>
+    <p class="subtitle">Notora gives you premium learning like PW — safe, student-first, and always free. 🚀</p>
+
+    <div class="card-container">
+      <div class="card">
+        <div class="icon-box"><i class="fas fa-chalkboard-teacher"></i></div>
+        <h3>Free Lectures</h3>
+        <p>Access top-quality educational content at zero cost. Learn like a pro with structured video lectures.</p>
+      </div>
+
+      <div class="card">
+        <div class="icon-box"><i class="fas fa-shield-alt"></i></div>
+        <h3>Fully Safe</h3>
+        <p>All resources are manually verified. No spam, no ads, no distractions. Just clean study time.</p>
+      </div>
+
+      <div class="card">
+        <div class="icon-box"><i class="fas fa-users"></i></div>
+        <h3>Built for Students</h3>
+        <p>We grow with you. Every update, every feature is shaped by your feedback. Made by learners, for learners.</p>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>
