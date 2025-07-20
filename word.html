@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Search Puzzle</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 10px;
+            color: white;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .header {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+        
+        .game-area {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .grid-container {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(15, 1fr);
+            gap: 2px;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        
+        .cell {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.8);
+            color: #333;
+            font-weight: bold;
+            font-size: 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+        
+        .cell:hover {
+            background: rgba(255,255,255,0.9);
+            transform: scale(1.1);
+        }
+        
+        .cell.selected {
+            background: #4CAF50;
+            color: white;
+            transform: scale(1.05);
+        }
+        
+        .cell.found {
+            background: #2196F3;
+            color: white;
+        }
+        
+        .word-list {
+            width: 300px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            height: fit-content;
+        }
+        
+        .word-list h2 {
+            margin-bottom: 15px;
+            text-align: center;
+            color: #fff;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        
+        .words {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        
+        .word-item {
+            padding: 8px 12px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 20px;
+            text-align: center;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+        
+        .word-item.found {
+            background: #4CAF50;
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+        
+        .score {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .word-list {
+                width: 100%;
+                order: -1;
+            }
+            
+            .grid {
+                grid-template-columns: repeat(12, 1fr);
+            }
+            
+            .cell {
+                font-size: 12px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .grid {
+                grid-template-columns: repeat(10, 1fr);
+            }
+            
+            .words {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Word Search Challenge</h1>
+            <div class="controls">
+                <button class="btn" onclick="generateNewPuzzle()">नया गेम</button>
+                <button class="btn" onclick="showHint()">हिंट</button>
+                <button class="btn" onclick="toggleHighlight()">हाइलाइट टॉगल</button>
+            </div>
+        </div>
+        
+        <div class="word-list">
+            <h2>📝 खोजने वाले शब्द</h2>
+            <div class="stats">
+                <span>मिले: <span id="found-count">0</span></span>
+                <span>कुल: <span id="total-count">0</span></span>
+            </div>
+            <div class="words" id="word-list"></div>
+            <div class="score">
+                स्कोर: <span id="score">0</span>
+            </div>
+        </div>
+        
+        <div class="game-area">
+            <div class="grid-container">
+                <div class="grid" id="puzzle-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPuzzle = [];
+        let wordsToFind = [];
+        let foundWords = [];
+        let selectedCells = [];
+        let isSelecting = false;
+        let score = 0;
+        let showingHints = false;
+        
+        // Extensive word list with mix of Hindi and English words
+        const wordBank = [
+            'COMPUTER', 'INTERNET', 'MOBILE', 'CAMERA', 'MUSIC', 'DANCE', 'BOOK', 'SCHOOL',
+            'TEACHER', 'STUDENT', 'FRIEND', 'FAMILY', 'MOTHER', 'FATHER', 'BROTHER', 'SISTER',
+            'WATER', 'FIRE', 'EARTH', 'SPACE', 'TIME', 'LIGHT', 'SOUND', 'COLOR', 'FLOWER',
+            'TREE', 'BIRD', 'ANIMAL', 'CAR', 'BIKE', 'TRAIN', 'PLANE', 'HOUSE', 'DOOR',
+            'WINDOW', 'TABLE', 'CHAIR', 'PHONE', 'WATCH', 'SHIRT', 'SHOES', 'HAT', 'BAG',
+            'MONEY', 'GAME', 'SPORT', 'CRICKET', 'FOOTBALL', 'TENNIS', 'CHESS', 'CARDS',
+            'MOVIE', 'SONG', 'STORY', 'NEWS', 'PAPER', 'PEN', 'PENCIL', 'PAINT', 'BRUSH',
+            'HEART', 'MIND', 'SOUL', 'DREAM', 'HOPE', 'LOVE', 'PEACE', 'JOY', 'SMILE',
+            'STAR', 'MOON', 'SUN', 'CLOUD', 'RAIN', 'SNOW', 'WIND', 'OCEAN', 'RIVER',
+            'MOUNTAIN', 'FOREST', 'DESERT', 'ISLAND', 'BRIDGE', 'ROAD', 'CITY', 'VILLAGE',
+            'MARKET', 'SHOP', 'BANK', 'HOSPITAL', 'TEMPLE', 'CHURCH', 'MOSQUE', 'SCHOOL',
+            'COLLEGE', 'OFFICE', 'FACTORY', 'FARM', 'GARDEN', 'PARK', 'BEACH', 'HOTEL',
+            'RESTAURANT', 'CAFE', 'KITCHEN', 'BEDROOM', 'BATHROOM', 'LIVING', 'DINING',
+            'GARAGE', 'ROOF', 'WALL', 'FLOOR', 'CEILING', 'STAIRS', 'LIFT', 'BALCONY',
+            'MIRROR', 'CLOCK', 'LAMP', 'FAN', 'HEATER', 'COOLER', 'FRIDGE', 'OVEN',
+            'PLATE', 'BOWL', 'CUP', 'GLASS', 'SPOON', 'FORK', 'KNIFE', 'BOTTLE',
+            'APPLE', 'BANANA', 'ORANGE', 'MANGO', 'GRAPE', 'CHERRY', 'BERRY', 'MELON',
+            'BREAD', 'RICE', 'WHEAT', 'CORN', 'POTATO', 'ONION', 'TOMATO', 'CARROT',
+            'MILK', 'CHEESE', 'BUTTER', 'SUGAR', 'SALT', 'PEPPER', 'OIL', 'HONEY',
+            'FISH', 'CHICKEN', 'MEAT', 'EGG', 'SOUP', 'SALAD', 'PIZZA', 'BURGER',
+            'TEA', 'COFFEE', 'JUICE', 'SODA', 'WINE', 'BEER', 'ICE', 'CAKE',
+            'COOKIE', 'CANDY', 'CHOCOLATE', 'SWEET', 'SOUR', 'BITTER', 'SPICY', 'TASTY',
+            'HOT', 'COLD', 'WARM', 'COOL', 'DRY', 'WET', 'CLEAN', 'DIRTY',
+            'NEW', 'OLD', 'YOUNG', 'FRESH', 'ROTTEN', 'GOOD', 'BAD', 'BEST',
+            'FAST', 'SLOW', 'HIGH', 'LOW', 'BIG', 'SMALL', 'LONG', 'SHORT',
+            'WIDE', 'NARROW', 'THICK', 'THIN', 'HEAVY', 'LIGHT', 'HARD', 'SOFT',
+            'ROUGH', 'SMOOTH', 'SHARP', 'BLUNT', 'BRIGHT', 'DARK', 'LOUD', 'QUIET',
+            'HAPPY', 'SAD', 'ANGRY', 'CALM', 'EXCITED', 'BORED', 'TIRED', 'FRESH',
+            'STRONG', 'WEAK', 'BRAVE', 'AFRAID', 'PROUD', 'HUMBLE', 'KIND', 'CRUEL',
+            'HONEST', 'FALSE', 'TRUE', 'RIGHT', 'WRONG', 'EASY', 'HARD', 'SIMPLE',
+            'COMPLEX', 'CLEAR', 'VAGUE', 'OPEN', 'CLOSED', 'FULL', 'EMPTY', 'RICH',
+            'POOR', 'FREE', 'BUSY', 'LAZY', 'ACTIVE', 'PASSIVE', 'PUBLIC', 'PRIVATE'
+        ];
+        
+        function getRandomWords(count) {
+            const shuffled = [...wordBank].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, count);
+        }
+        
+        function createEmptyGrid(size = 15) {
+            return Array(size).fill(null).map(() => Array(size).fill(''));
+        }
+        
+        function canPlaceWord(grid, word, row, col, direction) {
+            const directions = {
+                horizontal: [0, 1],
+                vertical: [1, 0],
+                diagonal: [1, 1],
+                diagonalUp: [-1, 1]
+            };
+            
+            const [dr, dc] = directions[direction];
+            
+            for (let i = 0; i < word.length; i++) {
+                const r = row + i * dr;
+                const c = col + i * dc;
+                
+                if (r < 0 || r >= grid.length || c < 0 || c >= grid[0].length) {
+                    return false;
+                }
+                
+                if (grid[r][c] !== '' && grid[r][c] !== word[i]) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        
+        function placeWord(grid, word, row, col, direction) {
+            const directions = {
+                horizontal: [0, 1],
+                vertical: [1, 0],
+                diagonal: [1, 1],
+                diagonalUp: [-1, 1]
+            };
+            
+            const [dr, dc] = directions[direction];
+            const positions = [];
+            
+            for (let i = 0; i < word.length; i++) {
+                const r = row + i * dr;
+                const c = col + i * dc;
+                grid[r][c] = word[i];
+                positions.push([r, c]);
+            }
+            
+            return positions;
+        }
+        
+        function generatePuzzle() {
+            const gridSize = window.innerWidth < 768 ? (window.innerWidth < 480 ? 10 : 12) : 15;
+            const wordCount = Math.min(Math.floor(gridSize * 1.5), 25);
+            
+            currentPuzzle = createEmptyGrid(gridSize);
+            wordsToFind = getRandomWords(wordCount);
+            foundWords = [];
+            
+            const directions = ['horizontal', 'vertical', 'diagonal', 'diagonalUp'];
+            const wordPositions = {};
+            
+            // Place words in grid
+            for (const word of wordsToFind) {
+                let placed = false;
+                let attempts = 0;
+                
+                while (!placed && attempts < 100) {
+                    const direction = directions[Math.floor(Math.random() * directions.length)];
+                    const row = Math.floor(Math.random() * gridSize);
+                    const col = Math.floor(Math.random() * gridSize);
+                    
+                    if (canPlaceWord(currentPuzzle, word, row, col, direction)) {
+                        wordPositions[word] = placeWord(currentPuzzle, word, row, col, direction);
+                        placed = true;
+                    }
+                    attempts++;
+                }
+            }
+            
+            // Fill empty cells with random letters
+            const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            for (let i = 0; i < gridSize; i++) {
+                for (let j = 0; j < gridSize; j++) {
+                    if (currentPuzzle[i][j] === '') {
+                        currentPuzzle[i][j] = letters[Math.floor(Math.random() * letters.length)];
+                    }
+                }
+            }
+            
+            return wordPositions;
+        }
+        
+        function renderGrid() {
+            const grid = document.getElementById('puzzle-grid');
+            const gridSize = currentPuzzle.length;
+            
+            grid.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+            grid.innerHTML = '';
+            
+            for (let i = 0; i < gridSize; i++) {
+                for (let j = 0; j < gridSize; j++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.textContent = currentPuzzle[i][j];
+                    cell.dataset.row = i;
+                    cell.dataset.col = j;
+                    
+                    cell.addEventListener('mousedown', startSelection);
+                    cell.addEventListener('mouseenter', continueSelection);
+                    cell.addEventListener('mouseup', endSelection);
+                    
+                    grid.appendChild(cell);
+                }
+            }
+        }
+        
+        function renderWordList() {
+            const wordList = document.getElementById('word-list');
+            const foundCount = document.getElementById('found-count');
+            const totalCount = document.getElementById('total-count');
+            
+            wordList.innerHTML = '';
+            
+            wordsToFind.forEach(word => {
+                const wordDiv = document.createElement('div');
+                wordDiv.className = `word-item ${foundWords.includes(word) ? 'found' : ''}`;
+                wordDiv.textContent = word;
+                wordList.appendChild(wordDiv);
+            });
+            
+            foundCount.textContent = foundWords.length;
+            totalCount.textContent = wordsToFind.length;
+        }
+        
+        function startSelection(e) {
+            if (e.button !== 0) return; // Only left click
+            
+            isSelecting = true;
+            selectedCells = [e.target];
+            e.target.classList.add('selected');
+            e.preventDefault();
+        }
+        
+        function continueSelection(e) {
+            if (!isSelecting) return;
+            
+            // Clear previous selection
+            selectedCells.forEach(cell => cell.classList.remove('selected'));
+            selectedCells = getSelectionLine(selectedCells[0], e.target);
+            selectedCells.forEach(cell => cell.classList.add('selected'));
+        }
+        
+        function endSelection() {
+            if (!isSelecting) return;
+            
+            isSelecting = false;
+            
+            const selectedWord = selectedCells.map(cell => cell.textContent).join('');
+            const reverseWord = selectedWord.split('').reverse().join('');
+            
+            if (wordsToFind.includes(selectedWord) && !foundWords.includes(selectedWord)) {
+                foundWords.push(selectedWord);
+                selectedCells.forEach(cell => {
+                    cell.classList.remove('selected');
+                    cell.classList.add('found');
+                });
+                score += selectedWord.length * 10;
+                updateScore();
+                renderWordList();
+                
+                if (foundWords.length === wordsToFind.length) {
+                    setTimeout(() => {
+                        alert(`बधाई हो! आपने सभी शब्द खोज लिए! स्कोर: ${score}`);
+                    }, 500);
+                }
+            } else if (wordsToFind.includes(reverseWord) && !foundWords.includes(reverseWord)) {
+                foundWords.push(reverseWord);
+                selectedCells.forEach(cell => {
+                    cell.classList.remove('selected');
+                    cell.classList.add('found');
+                });
+                score += reverseWord.length * 10;
+                updateScore();
+                renderWordList();
+                
+                if (foundWords.length === wordsToFind.length) {
+                    setTimeout(() => {
+                        alert(`बधाई हो! आपने सभी शब्द खोज लिए! स्कोर: ${score}`);
+                    }, 500);
+                }
+            } else {
+                selectedCells.forEach(cell => cell.classList.remove('selected'));
+            }
+            
+            selectedCells = [];
+        }
+        
+        function getSelectionLine(start, end) {
+            const startRow = parseInt(start.dataset.row);
+            const startCol = parseInt(start.dataset.col);
+            const endRow = parseInt(end.dataset.row);
+            const endCol = parseInt(end.dataset.col);
+            
+            const cells = [];
+            const rowDiff = endRow - startRow;
+            const colDiff = endCol - startCol;
+            
+            const steps = Math.max(Math.abs(rowDiff), Math.abs(colDiff));
+            
+            if (steps === 0) return [start];
+            
+            const rowStep = rowDiff === 0 ? 0 : rowDiff / Math.abs(rowDiff);
+            const colStep = colDiff === 0 ? 0 : colDiff / Math.abs(colDiff);
+            
+            // Only allow straight lines (horizontal, vertical, diagonal)
+            if (Math.abs(rowDiff) !== Math.abs(colDiff) && rowDiff !== 0 && colDiff !== 0) {
+                return [start];
+            }
+            
+            for (let i = 0; i <= steps; i++) {
+                const row = startRow + Math.round(i * rowStep);
+                const col = startCol + Math.round(i * colStep);
+                const cell = document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
+                if (cell) cells.push(cell);
+            }
+            
+            return cells;
+        }
+        
+        function updateScore() {
+            document.getElementById('score').textContent = score;
+        }
+        
+        function generateNewPuzzle() {
+            generatePuzzle();
+            renderGrid();
+            renderWordList();
+            score = 0;
+            updateScore();
+            showingHints = false;
+        }
+        
+        function showHint() {
+            if (foundWords.length === wordsToFind.length) return;
+            
+            const remainingWords = wordsToFind.filter(word => !foundWords.includes(word));
+            const randomWord = remainingWords[Math.floor(Math.random() * remainingWords.length)];
+            
+            alert(`हिंट: "${randomWord}" शब्द खोजें!`);
+        }
+        
+        function toggleHighlight() {
+            showingHints = !showingHints;
+            const cells = document.querySelectorAll('.cell');
+            
+            if (showingHints) {
+                // Highlight first letter of each unfound word
+                const remainingWords = wordsToFind.filter(word => !foundWords.includes(word));
+                remainingWords.forEach(word => {
+                    cells.forEach(cell => {
+                        if (cell.textContent === word[0] && !cell.classList.contains('found')) {
+                            cell.style.background = '#FFC107';
+                            cell.style.color = '#000';
+                        }
+                    });
+                });
+            } else {
+                cells.forEach(cell => {
+                    if (!cell.classList.contains('found') && !cell.classList.contains('selected')) {
+                        cell.style.background = 'rgba(255,255,255,0.8)';
+                        cell.style.color = '#333';
+                    }
+                });
+            }
+        }
+        
+        // Prevent context menu on right click
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        
+        // Touch support for mobile
+        document.addEventListener('touchstart', e => e.preventDefault(), { passive: false });
+        
+        // Initialize game
+        generateNewPuzzle();
+    </script>
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dash Hero - Infinite Runner</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: white;
+    }
+
+    canvas {
+      display: block;
+      background: linear-gradient(#5bc0de, #0275d8);
+    }
+
+    #ui {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 2;
+    }
+
+    #score {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    #gameOver {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.8);
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    #gameOver.hidden {
+      display: none;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      background: #5cb85c;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="ui">
+    <div id="score">Score: 0</div>
+    <div id="gameOver" class="hidden">
+      <h1>Game Over</h1>
+      <p id="finalScore"></p>
+      <button onclick="restartGame()">Play Again</button>
+    </div>
+  </div>
+  <canvas id="gameCanvas"></canvas>
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const gravity = 1;
+    const jumpPower = -20;
+    const slideDuration = 500;
+    const obstacleSpeedStart = 6;
+
+    let gameSpeed = obstacleSpeedStart;
+    let score = 0;
+    let gameOver = false;
+
+    const player = {
+      x: 100,
+      y: 0,
+      width: 50,
+      height: 50,
+      velocityY: 0,
+      jumping: false,
+      sliding: false,
+    };
+
+    const ground = canvas.height - 100;
+    player.y = ground - player.height;
+
+    const obstacles = [];
+
+    function createObstacle() {
+      const size = 50 + Math.random() * 50;
+      obstacles.push({
+        x: canvas.width,
+        y: ground - size,
+        width: size,
+        height: size
+      });
+    }
+
+    function drawPlayer() {
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(player.x, player.y, player.width, player.height);
+    }
+
+    function drawObstacles() {
+      ctx.fillStyle = 'red';
+      for (let obs of obstacles) {
+        ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+      }
+    }
+
+    function updateObstacles() {
+      for (let i = 0; i < obstacles.length; i++) {
+        obstacles[i].x -= gameSpeed;
+        if (obstacles[i].x + obstacles[i].width < 0) {
+          obstacles.splice(i, 1);
+          i--;
+        }
+      }
+    }
+
+    function detectCollision() {
+      for (let obs of obstacles) {
+        if (
+          player.x < obs.x + obs.width &&
+          player.x + player.width > obs.x &&
+          player.y < obs.y + obs.height &&
+          player.y + player.height > obs.y
+        ) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    function drawGround() {
+      ctx.fillStyle = '#333';
+      ctx.fillRect(0, ground, canvas.width, canvas.height - ground);
+    }
+
+    function gameLoop() {
+      if (gameOver) return;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawGround();
+      drawPlayer();
+      drawObstacles();
+
+      player.y += player.velocityY;
+      player.velocityY += gravity;
+
+      if (player.y >= ground - player.height) {
+        player.y = ground - player.height;
+        player.jumping = false;
+      }
+
+      updateObstacles();
+
+      if (detectCollision()) {
+        document.getElementById('finalScore').innerText = `Your Score: ${score}`;
+        document.getElementById('gameOver').classList.remove('hidden');
+        gameOver = true;
+        return;
+      }
+
+      score++;
+      document.getElementById('score').innerText = `Score: ${score}`;
+
+      if (score % 500 === 0) {
+        gameSpeed++;
+      }
+
+      requestAnimationFrame(gameLoop);
+    }
+
+    setInterval(() => {
+      if (!gameOver) createObstacle();
+    }, 1500);
+
+    function restartGame() {
+      player.y = ground - player.height;
+      player.velocityY = 0;
+      obstacles.length = 0;
+      score = 0;
+      gameSpeed = obstacleSpeedStart;
+      document.getElementById('gameOver').classList.add('hidden');
+      gameOver = false;
+      gameLoop();
+    }
+
+    // Controls
+    let touchStartY = 0;
+
+    window.addEventListener('touchstart', (e) => {
+      touchStartY = e.touches[0].clientY;
+    });
+
+    window.addEventListener('touchend', (e) => {
+      const touchEndY = e.changedTouches[0].clientY;
+      if (touchStartY - touchEndY > 50 && !player.jumping) {
+        player.velocityY = jumpPower;
+        player.jumping = true;
+      } else if (touchEndY - touchStartY > 50 && !player.sliding) {
+        player.sliding = true;
+        player.height = 25;
+        setTimeout(() => {
+          player.height = 50;
+          player.sliding = false;
+        }, slideDuration);
+      }
+    });
+
+    // Support desktop click to jump
+    window.addEventListener('mousedown', () => {
+      if (!player.jumping) {
+        player.velocityY = jumpPower;
+        player.jumping = true;
+      }
+    });
+
+    gameLoop();
+  </script>
+</body>
+</html>

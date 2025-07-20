@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Ludo Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: white;
+        }
+
+        .game-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+        }
+
+        .turn-indicator {
+            font-size: 1.2em;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .dice-result {
+            font-size: 1.5em;
+            font-weight: bold;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 15px;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .canvas-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #gameCanvas {
+            border: 3px solid #333;
+            border-radius: 10px;
+            background: #f8f9fa;
+        }
+
+        .controls {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #rollButton {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            font-size: 1.3em;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(238, 90, 36, 0.3);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            touch-action: manipulation;
+            min-width: 200px;
+            min-height: 70px;
+        }
+
+        #rollButton:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(238, 90, 36, 0.4);
+        }
+
+        #rollButton:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        #rollButton:disabled {
+            background: linear-gradient(45deg, #95a5a6, #7f8c8d);
+            cursor: not-allowed;
+            box-shadow: 0 4px 15px rgba(127, 140, 141, 0.2);
+        }
+
+        #restartButton {
+            background: linear-gradient(45deg, #2ecc71, #27ae60);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.3);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            touch-action: manipulation;
+            margin-top: 10px;
+        }
+
+        #restartButton:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(39, 174, 96, 0.4);
+        }
+
+        .game-message {
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .player-tokens {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+        }
+
+        .token-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+        }
+
+        .token-preview {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+
+        .player-token {
+            background: #3498db;
+        }
+
+        .bot-token {
+            background: #e74c3c;
+        }
+
+        @media (max-width: 480px) {
+            .game-container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            #gameCanvas {
+                max-width: 100%;
+                height: auto;
+            }
+
+            #rollButton {
+                padding: 18px 35px;
+                font-size: 1.2em;
+                min-width: 180px;
+            }
+
+            .game-info {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>🎲 Ludo Race</h1>
+        
+        <div class="player-tokens">
+            <div class="token-info">
+                <div class="token-preview player-token"></div>
+                <span>You (Blue)</span>
+            </div>
+            <div class="token-info">
+                <div class="token-preview bot-token"></div>
+                <span>Bot (Red)</span>
+            </div>
+        </div>
+
+        <div class="game-info">
+            <div class="turn-indicator" id="turnIndicator">Your Turn</div>
+            <div class="dice-result" id="diceResult">🎲</div>
+        </div>
+
+        <div class="canvas-container">
+            <canvas id="gameCanvas" width="400" height="400"></canvas>
+        </div>
+
+        <div class="controls">
+            <button id="rollButton">🎲 Roll Dice</button>
+            <button id="restartButton" style="display: none;">🔄 Play Again</button>
+        </div>
+
+        <div id="gameMessage" class="game-message" style="display: none;"></div>
+    </div>
+
+    <script>
+        class LudoGame {
+            constructor() {
+                this.canvas = document.getElementById('gameCanvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.rollButton = document.getElementById('rollButton');
+                this.restartButton = document.getElementById('restartButton');
+                this.turnIndicator = document.getElementById('turnIndicator');
+                this.diceResult = document.getElementById('diceResult');
+                this.gameMessage = document.getElementById('gameMessage');
+                
+                // Game state
+                this.boardSize = 30; // Total tiles in the loop
+                this.tileSize = 12;
+                this.centerX = 200;
+                this.centerY = 200;
+                this.radius = 150;
+                
+                this.currentPlayer = 'player'; // 'player' or 'bot'
+                this.gameEnded = false;
+                this.animating = false;
+                
+                // Player positions (0 to boardSize-1, then boardSize = completed lap)
+                this.playerPosition = 0;
+                this.botPosition = 0;
+                
+                // Animation variables
+                this.animationFrameId = null;
+                this.animationStartTime = 0;
+                this.animationDuration = 800;
+                this.animatingToken = null;
+                this.animationStartPos = 0;
+                this.animationEndPos = 0;
+                
+                this.initializeGame();
+                this.setupEventListeners();
+                this.drawGame();
+            }
+            
+            initializeGame() {
+                this.currentPlayer = 'player';
+                this.gameEnded = false;
+                this.animating = false;
+                this.playerPosition = 0;
+                this.botPosition = 0;
+                this.updateUI();
+            }
+            
+            setupEventListeners() {
+                this.rollButton.addEventListener('click', () => this.rollDice());
+                this.restartButton.addEventListener('click', () => this.restartGame());
+            }
+            
+            getTileCoordinates(position) {
+                if (position >= this.boardSize) {
+                    // Completed lap - return to start position
+                    position = 0;
+                }
+                
+                const angle = (position / this.boardSize) * 2 * Math.PI - Math.PI / 2;
+                const x = this.centerX + Math.cos(angle) * this.radius;
+                const y = this.centerY + Math.sin(angle) * this.radius;
+                return { x, y };
+            }
+            
+            drawBoard() {
+                // Clear canvas
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                // Draw board background
+                this.ctx.fillStyle = '#f8f9fa';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                // Draw outer circle
+                this.ctx.strokeStyle = '#2c3e50';
+                this.ctx.lineWidth = 4;
+                this.ctx.beginPath();
+                this.ctx.arc(this.centerX, this.centerY, this.radius + 20, 0, 2 * Math.PI);
+                this.ctx.stroke();
+                
+                // Draw inner circle
+                this.ctx.beginPath();
+                this.ctx.arc(this.centerX, this.centerY, this.radius - 20, 0, 2 * Math.PI);
+                this.ctx.stroke();
+                
+                // Draw tiles
+                for (let i = 0; i < this.boardSize; i++) {
+                    const coords = this.getTileCoordinates(i);
+                    
+                    // Tile background
+                    this.ctx.fillStyle = i === 0 ? '#f39c12' : '#ecf0f1';
+                    this.ctx.strokeStyle = '#34495e';
+                    this.ctx.lineWidth = 2;
+                    
+                    this.ctx.beginPath();
+                    this.ctx.arc(coords.x, coords.y, this.tileSize, 0, 2 * Math.PI);
+                    this.ctx.fill();
+                    this.ctx.stroke();
+                    
+                    // Tile number
+                    this.ctx.fillStyle = '#2c3e50';
+                    this.ctx.font = 'bold 10px Arial';
+                    this.ctx.textAlign = 'center';
+                    this.ctx.fillText(i.toString(), coords.x, coords.y + 3);
+                }
+                
+                // Draw start/finish indicator
+                const startCoords = this.getTileCoordinates(0);
+                this.ctx.fillStyle = '#e67e22';
+                this.ctx.font = 'bold 12px Arial';
+                this.ctx.textAlign = 'center';
+                this.ctx.fillText('START', startCoords.x, startCoords.y - 25);
+                this.ctx.fillText('FINISH', startCoords.x, startCoords.y + 35);
+            }
+            
+            drawToken(position, color, offset = 0) {
+                const coords = this.getTileCoordinates(position);
+                const x = coords.x + offset;
+                const y = coords.y;
+                
+                // Token shadow
+                this.ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+                this.ctx.beginPath();
+                this.ctx.arc(x + 2, y + 2, 8, 0, 2 * Math.PI);
+                this.ctx.fill();
+                
+                // Token
+                this.ctx.fillStyle = color;
+                this.ctx.strokeStyle = 'white';
+                this.ctx.lineWidth = 3;
+                
+                this.ctx.beginPath();
+                this.ctx.arc(x, y, 8, 0, 2 * Math.PI);
+                this.ctx.fill();
+                this.ctx.stroke();
+            }
+            
+            drawGame() {
+                this.drawBoard();
+                
+                if (!this.animating) {
+                    // Draw both tokens when not animating
+                    const offset = this.playerPosition === this.botPosition ? 8 : 0;
+                    this.drawToken(this.playerPosition, '#3498db', -offset);
+                    this.drawToken(this.botPosition, '#e74c3c', offset);
+                } else {
+                    // During animation, draw non-animating token normally
+                    if (this.animatingToken === 'player') {
+                        const offset = this.botPosition === this.animationEndPos ? 8 : 0;
+                        this.drawToken(this.botPosition, '#e74c3c', offset);
+                    } else {
+                        const offset = this.playerPosition === this.animationEndPos ? 8 : 0;
+                        this.drawToken(this.playerPosition, '#3498db', -offset);
+                    }
+                }
+            }
+            
+            animateTokenMovement(player, startPos, endPos, callback) {
+                this.animating = true;
+                this.animatingToken = player;
+                this.animationStartPos = startPos;
+                this.animationEndPos = endPos;
+                this.animationStartTime = performance.now();
+                
+                const animate = (currentTime) => {
+                    const elapsed = currentTime - this.animationStartTime;
+                    const progress = Math.min(elapsed / this.animationDuration, 1);
+                    
+                    // Easing function for smooth animation
+                    const easeProgress = 1 - Math.pow(1 - progress, 3);
+                    
+                    // Calculate current position
+                    let currentPos = startPos;
+                    const totalSteps = endPos - startPos;
+                    
+                    if (totalSteps > 0) {
+                        currentPos = startPos + (totalSteps * easeProgress);
+                    }
+                    
+                    // Redraw board
+                    this.drawBoard();
+                    
+                    // Draw tokens
+                    const color = player === 'player' ? '#3498db' : '#e74c3c';
+                    const otherColor = player === 'player' ? '#e74c3c' : '#3498db';
+                    const otherPos = player === 'player' ? this.botPosition : this.playerPosition;
+                    
+                    // Draw other token
+                    const offset = Math.floor(currentPos) === otherPos ? 8 : 0;
+                    this.drawToken(otherPos, otherColor, player === 'player' ? offset : -offset);
+                    
+                    // Draw animating token
+                    this.drawToken(currentPos, color, player === 'player' ? -offset : offset);
+                    
+                    if (progress < 1) {
+                        this.animationFrameId = requestAnimationFrame(animate);
+                    } else {
+                        this.animating = false;
+                        this.animatingToken = null;
+                        if (callback) callback();
+                    }
+                };
+                
+                this.animationFrameId = requestAnimationFrame(animate);
+            }
+            
+            rollDice() {
+                if (this.gameEnded || this.animating) return;
+                
+                const diceValue = Math.floor(Math.random() * 6) + 1;
+                this.diceResult.textContent = `🎲 ${diceValue}`;
+                
+                this.rollButton.disabled = true;
+                
+                if (this.currentPlayer === 'player') {
+                    this.movePlayer(diceValue);
+                }
+            }
+            
+            movePlayer(steps) {
+                const startPos = this.playerPosition;
+                this.playerPosition += steps;
+                
+                this.animateTokenMovement('player', startPos, this.playerPosition, () => {
+                    this.checkWinCondition();
+                    if (!this.gameEnded) {
+                        this.currentPlayer = 'bot';
+                        this.updateUI();
+                        setTimeout(() => this.botTurn(), 1000);
+                    }
+                });
+            }
+            
+            moveBot(steps) {
+                const startPos = this.botPosition;
+                this.botPosition += steps;
+                
+                this.animateTokenMovement('bot', startPos, this.botPosition, () => {
+                    this.checkWinCondition();
+                    if (!this.gameEnded) {
+                        this.currentPlayer = 'player';
+                        this.updateUI();
+                        this.rollButton.disabled = false;
+                    }
+                });
+            }
+            
+            botTurn() {
+                if (this.gameEnded) return;
+                
+                const diceValue = Math.floor(Math.random() * 6) + 1;
+                this.diceResult.textContent = `🎲 ${diceValue}`;
+                
+                setTimeout(() => {
+                    this.moveBot(diceValue);
+                }, 500);
+            }
+            
+            checkWinCondition() {
+                if (this.playerPosition >= this.boardSize) {
+                    this.endGame('You Win! 🎉');
+                } else if (this.botPosition >= this.boardSize) {
+                    this.endGame('Bot Wins! 🤖');
+                }
+            }
+            
+            endGame(message) {
+                this.gameEnded = true;
+                this.gameMessage.textContent = message;
+                this.gameMessage.style.display = 'block';
+                this.rollButton.style.display = 'none';
+                this.restartButton.style.display = 'inline-block';
+                this.turnIndicator.textContent = 'Game Over';
+            }
+            
+            updateUI() {
+                if (this.gameEnded) return;
+                
+                if (this.currentPlayer === 'player') {
+                    this.turnIndicator.textContent = 'Your Turn';
+                    this.turnIndicator.style.color = '#3498db';
+                } else {
+                    this.turnIndicator.textContent = 'Bot Turn';
+                    this.turnIndicator.style.color = '#e74c3c';
+                }
+            }
+            
+            restartGame() {
+                // Cancel any ongoing animation
+                if (this.animationFrameId) {
+                    cancelAnimationFrame(this.animationFrameId);
+                }
+                
+                this.initializeGame();
+                this.drawGame();
+                
+                this.gameMessage.style.display = 'none';
+                this.rollButton.style.display = 'inline-block';
+                this.rollButton.disabled = false;
+                this.restartButton.style.display = 'none';
+                this.diceResult.textContent = '🎲';
+            }
+        }
+        
+        // Initialize game when page loads
+        window.addEventListener('load', () => {
+            new LudoGame();
+        });
+        
+        // Handle canvas resize for mobile
+        window.addEventListener('resize', () => {
+            const canvas = document.getElementById('gameCanvas');
+            const container = canvas.parentElement;
+            const maxWidth = container.offsetWidth - 30;
+            
+            if (maxWidth < 400) {
+                canvas.style.width = maxWidth + 'px';
+                canvas.style.height = maxWidth + 'px';
+            } else {
+                canvas.style.width = '400px';
+                canvas.style.height = '400px';
+            }
+        });
+    </script>
+</body>
+</html>
