@@ -197,6 +197,191 @@
         font-size: 2.2rem;
       }
     }
+
+
+    /* HOW IT WORKS */
+section.how-it-works {
+  /* background: #111; */
+  padding: 80px 20px;
+  text-align: center;
+}
+section.how-it-works h2 {
+  font-size: 2.8rem;
+  color:#4eeef7;
+  margin-bottom: 10px;
+}
+section.how-it-works .subtitle {
+  color: #888;
+  font-size: 1rem;
+  max-width: 700px;
+  margin: 0 auto 60px;
+}
+
+.steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+}
+.step {
+  flex: 1 1 260px;
+  max-width: 300px;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeUp 0.8s ease forwards;
+  animation-delay: calc(var(--i) * 0.3s);
+}
+.step:hover h3 { color: #fff; }
+.step:hover p  { color: #ddd; }
+
+/* neon‑ring circle */
+.circle {
+  position: relative;
+  width: 80px;  height: 80px;
+  margin: 0 auto 20px;
+}
+.circle span {
+  position: absolute;
+  bottom: -8px; right: -8px;
+  background: #4eeef7;
+  color: #000000;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  font-size: 0.9rem;
+  line-height: 24px;
+}
+.circle i {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  color:#4eeef7;
+  font-size: 1.5rem;
+  z-index: 1;
+}
+
+/* animated neon border */
+.circle::before {
+  content: "";
+  position: absolute;
+  top: -4px; left: -4px;
+  width: calc(100% + 8px);
+  height: calc(100% + 8px);
+  border-radius: 50%;
+  border: 4px solid #333;
+  box-shadow: 0 0 12px rgba(92, 255, 255, 0.2),
+              inset 0 0 8px rgba(24, 244, 244, 0.2);
+  animation: spin 3s linear infinite;
+}
+.step:hover .circle::before {
+  animation-duration: 1s;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .steps {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+
+/* WHAT WE OFFER */
+section.offer {
+  /* background: #111; */
+  padding: 80px 20px;
+  text-align: center;
+}
+section.offer h2 {
+  font-size: 2.8rem;
+  color: #4eeef7;
+  margin-bottom: 10px;
+}
+section.offer .subtitle {
+  color: #888;
+  font-size: 1rem;
+  max-width: 700px;
+  margin: 0 auto 60px;
+}
+
+.offer-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  perspective: 1000px;
+}
+
+.offer-card {
+  background: rgba(255,255,255,0.05);
+  border-radius: 20px;
+  width: 260px;
+  padding: 30px 20px;
+  color: #ddd;
+  transform-style: preserve-3d;
+  transition: transform 0.6s ease, box-shadow 0.6s ease;
+  position: relative;
+  overflow: hidden;
+}
+.offer-card::before {
+  content:"";
+  position:absolute;
+  top:-4px; left:-4px;
+  width:calc(100%+8px);
+  height:calc(100%+8px);
+  border-radius:20px;
+  border:2px solid #333;
+  box-shadow:0 0 12px rgba(255,60,90,0.4), inset 0 0 8px rgba(255,60,90,0.2);
+  transition: box-shadow 0.6s ease;
+}
+
+.offer-card:hover {
+  transform: rotateY(15deg) rotateX(10deg) scale(1.05);
+  box-shadow: 0 20px 40px rgba(0, 255, 255, 0.2);
+}
+.offer-card:hover::before {
+  box-shadow:0 0 20px rgba(255,60,90,0.6), inset 0 0 12px rgba(255,60,90,0.4);
+}
+
+.offer-card .icon {
+  font-size: 48px;
+  color:#4eeef7;
+  margin-bottom: 15px;
+  transition: transform 0.6s ease;
+}
+.offer-card:hover .icon {
+  transform: translateZ(40px) rotate(10deg);
+}
+
+.offer-card h3 {
+  font-size: 1.3rem;
+  color: #fff;
+  margin-bottom: 12px;
+}
+.offer-card p {
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .offer-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -255,6 +440,70 @@
     </div>
   </div>
 </section>
+
+<!-- HOW IT WORKS SECTION -->
+<section class="how-it-works">
+  <h2>How It Works</h2>
+  <p class="subtitle">
+    Start learning instantly — no sign‑up, no hassle. Here’s how you can make the most of EduSpark:
+  </p>
+
+  <div class="steps">
+    <div class="step" style="--i:1">
+      <div class="circle"><i class="fas fa-door-open"></i><span>1</span></div>
+      <h3>Open &amp; Start</h3>
+      <p>No log‑in, no sign‑up—just jump straight into thousands of lectures and resources, anytime, anywhere.</p>
+    </div>
+
+    <div class="step" style="--i:2">
+      <div class="circle"><i class="fas fa-search"></i><span>2</span></div>
+      <h3>Explore &amp; Learn</h3>
+      <p>Browse by subject, filter by exam or category, and dive in at your own pace. Discover new topics every day.</p>
+    </div>
+
+    <div class="step" style="--i:3">
+      <div class="circle"><i class="fas fa-graduation-cap"></i><span>3</span></div>
+      <h3>Apply &amp; Master</h3>
+      <p>Test your knowledge with quizzes, track progress, and become the expert you’ve always wanted to be.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- WHAT WE OFFER SECTION -->
+<section class="offer">
+  <h2>What We Offer</h2>
+  <p class="subtitle">
+    Notora isn’t just another site — it’s your one‑stop, ad‑free hub for top‑tier PW, KGS & Next Topper lectures, all 100% free.
+  </p>
+
+  <div class="offer-grid">
+    <div class="offer-card">
+      <div class="icon"><i class="fas fa-play-circle"></i></div>
+      <h3>PW Lectures</h3>
+      <p>Stream every PW class without paying a rupee. Structured, in‑depth, always free.</p>
+    </div>
+
+    <div class="offer-card">
+      <div class="icon"><i class="fas fa-user-graduate"></i></div>
+      <h3>KGS Lectures</h3>
+      <p>Dive into KGS’s best lectures — no cost, no limits. Learn from the very best.</p>
+    </div>
+
+    <div class="offer-card">
+      <div class="icon"><i class="fas fa-star"></i></div>
+      <h3>Next Topper</h3>
+      <p>Exclusive Next Topper sessions, free forever. Your shortcut to exam success.</p>
+    </div>
+
+    <div class="offer-card">
+      <div class="icon"><i class="fas fa-ban"></i></div>
+      <h3>Ad‑Free</h3>
+      <p>Zero ads, zero distractions. Pure uninterrupted learning — just how it should be.</p>
+    </div>
+  </div>
+</section>
+
 
 </body>
 </html>
